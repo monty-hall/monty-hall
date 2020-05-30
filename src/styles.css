@@ -1,0 +1,64 @@
+body {
+  text-align: left;
+  background-color: #777777;
+}
+
+h1 {
+  color: #aadddd;
+  font-family: "Arial Black";
+  font-size: 40px;
+  text-align: left;
+  margin-left: 20px;
+}
+
+h2 {
+  text-align: left;
+  margin-left: 20px;
+  font-family: "Arial Black";
+  color: #222222
+}
+
+.menu {
+  width: 160px;
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  background-color: #005577;
+}
+
+.menu a {
+  padding: 6px 8px 6px 36px;
+  color: #bbbbbb;
+  display: block;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+.menu a:hover {
+  color: #ffffff;
+}
+
+#menuTitle {
+  color: #cccccc;
+}
+
+.main {
+  margin-left: 160px;
+  height: 100%;
+  padding: 0px 20px;
+}
+
+.image-section {
+  display: float;
+  justify-content: center;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
