@@ -4,6 +4,7 @@ import "./styles.css";
 
 import Home from "./home";
 import Play from "./play";
+import StandardPlay from "./standardPlay";
 
 function updateState(text) {
   this.setState({text});
@@ -47,9 +48,11 @@ class App extends React.Component {
   render() {
     let display;
     if (this.state.text == "Play") {
-      display = <Play />;
+      display = <Play updateDisplayCB={this.updateDisplay}/>;
+    } else if (this.state.text == "Standard") {
+      display = <StandardPlay />;
     } else {
-      display = <Home />
+      display = <Home />;
     }
 
     return (
