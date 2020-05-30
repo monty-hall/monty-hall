@@ -10,6 +10,8 @@ public:
 	int SwitchDoor(int chosen_door);
 	bool winner(int chosen_door);
 	int num_doors;
+
+	void execute(ostream& dbfile);
 private:
 	int winning_door;
 };
