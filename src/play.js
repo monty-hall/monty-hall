@@ -4,9 +4,20 @@ import React from "react";
 import "./styles.css";
 
 class Play extends React.Component {
-  handleClick = (e) => {
+  handleClickStd = (e) => {
     e.preventDefault();
     this.props.updateDisplayCB("Standard");
+  }
+
+  handleClickHell = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Hell");
+  }
+
+  handleClickRandom = (e) => {
+    var modes = ["Standard","Hell"];
+    e.preventDefault();
+    this.props.updateDisplayCB(modes[Math.floor(Math.random()*modes.length)]);
   }
 
   render () {
@@ -15,7 +26,9 @@ class Play extends React.Component {
         <h1>Let's Play</h1>
         <p>Select your game mode</p>
         <div>
-          <button onClick={this.handleClick}>Standard</button>
+          <button onClick={this.handleClickStd}>Standard</button>
+          <button onClick={this.handleClickHell}>Hell</button>
+          <button onClick={this.handleClickRandom}>Random</button>
         </div>
       </div>
     );

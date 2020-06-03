@@ -5,6 +5,7 @@ import "./styles.css";
 import Home from "./home";
 import Play from "./play";
 import StandardPlay from "./standardPlay";
+import HellPlay from "./hellPlay";
 
 function updateState(text) {
   this.setState({text});
@@ -28,6 +29,7 @@ class Menu extends React.Component {
         <h2 id="menuTitle">Menu</h2>
         <a href ='#' onClick={this.handleClickHome}>Home</a>
         <a href='#' onClick={this.handleClickPlay}>Play</a>
+        <a href='#'>Instructions</a>
         <a href='#'>About</a>
       </div>
     );
@@ -47,10 +49,12 @@ class App extends React.Component {
 
   render() {
     let display;
-    if (this.state.text == "Play") {
+    if (this.state.text === "Play") {
       display = <Play updateDisplayCB={this.updateDisplay}/>;
-    } else if (this.state.text == "Standard") {
+    } else if (this.state.text === "Standard") {
       display = <StandardPlay />;
+    } else if (this.state.text === "Hell") {
+      display = <HellPlay />;
     } else {
       display = <Home />;
     }
