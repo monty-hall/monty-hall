@@ -13,7 +13,7 @@ abstract class Monty {
 	public boolean check_win() {
 		return chosen_door == prize;
 	}
-	
+
 	public void switch_door(int d) {
 		chosen_door = d;
 	}
@@ -29,7 +29,7 @@ abstract class Monty {
 			if (t.equalsIgnoreCase("Y")) {
 				System.out.print("switch door = ");
 				int temp = scan.nextInt();
-				assert chosen_door <= n_doors;
+				assert temp <= n_doors;
 				switch_door(temp);
 			}
 		}
