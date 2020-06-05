@@ -6,8 +6,13 @@ import Home from "./home";
 import Play from "./play";
 import StandardPlay from "./standardPlay";
 import HellPlay from "./hellPlay";
+import AngelicPlay from "./angelicPlay";
+import MindPlay from "./mindPlay";
 import MysteryPlay from "./mysteryPlay";
 import Answers from "./answers";
+import Warning from "./warning";
+import StdAnswer from "./standardAnswer";
+import HellAnswer from "./hellAnswer";
 
 // top navbar
 class Menu extends React.Component {
@@ -45,13 +50,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "Home"
+      text: "Home",   // display screen
+      mode: "Standard"  // warning screen mode
     };
     this.updateDisplay = this.updateDisplay;
   }
 
   updateDisplay = (text) => {this.setState({text})}
+  updateMode = (mode) => {this.setState({mode})}
+  getMode = () => {return this.state.mode}
 
+  // determines which screen takes up main display
   render() {
     let display;
     if (this.state.text === "Play") {
@@ -60,10 +69,22 @@ class App extends React.Component {
       display = <StandardPlay />;
     } else if (this.state.text === "Hell") {
       display = <HellPlay />;
+    } else if (this.state.text === "Angelic") {
+      display = <AngelicPlay />;
+    } else if (this.state.text === "Mind") {
+      display = <MindPlay />;
     } else if (this.state.text === "Mystery") {
       display = <MysteryPlay />;
     } else if (this.state.text === "Answers") {
-      display = <Answers />;
+      display = <Answers updateDisplayCB={this.updateDisplay}
+                  updateModeCB={this.updateMode}/>;
+    } else if (this.state.text === "Warning") {
+      display = <Warning updateDisplayCB={this.updateDisplay} 
+                  getModeCB={this.getMode}/>
+    } else if (this.state.text === "StandardAnswer") {
+      display = <StdAnswer />;
+    } else if (this.state.text === "HellAnswer") {
+      display = <HellAnswer />
     } else {
       display = <Home />;
     }
