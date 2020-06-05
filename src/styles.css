@@ -1,14 +1,16 @@
 body {
+  margin: 0;
   text-align: left;
-  background-color: #777777;
+  background-color: #eeeeee;
+  width: 100%;
 }
 
 h1 {
-  color: #aadddd;
+  color: #54585a;
   font-family: "Arial Black";
   font-size: 40px;
   text-align: left;
-  margin-left: 20px;
+  column-span: all;
 }
 
 h2 {
@@ -18,44 +20,154 @@ h2 {
   color: #222222
 }
 
-.menu {
-  width: 160px;
-  height: 100%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
-  background-color: #005577;
+p {
+  color: #000000;
+  font-family: "arial";
 }
 
-.menu a {
-  padding: 6px 8px 6px 36px;
-  color: #bbbbbb;
-  display: block;
-  text-align: left;
+#menu {
+  overflow-x: hidden;
+  background-color: #62c6f2;
+  width: 100%;
+  align-content: center;
+  vertical-align: middle;
+}
+
+#menu a {
+  float: right;
+  padding: 14px;
+  color: #000000;
+  text-align: center;
   text-decoration: none;
   font-family: "Helvetica", cursive, sans-serif;
 }
 
-.menu a:hover {
+#menu a:hover {
   color: #ffffff;
 }
 
 #menuTitle {
+  float: left;
   color: #cccccc;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+#logo {
+  float: left;
+  height: 30px;
+  width: auto;
+  padding: 12px;
+}
+
+#logo:hover {
+  cursor: pointer;
 }
 
 .main {
-  margin-left: 160px;
-  height: 100%;
-  padding: 0px 20px;
+  padding: 16px;
+  padding-left: 150px;
+  padding-right: 150px;
+  column-count: 2;
+  column-gap: 40px;
+}
+
+.main1col {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.buttons div {
+  margin: 10px;
+}
+
+.rowButton {
+  border-radius: 10px;
+  padding: 10px 24px;
+  background-color: #777777;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+  cursor: not-allowed;
+}
+
+.rowButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0.19);
+}
+
+.rowButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.rowButton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.rowButton:hover span {
+  padding-right: 25px;
+}
+
+.rowButton:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+#red {
+  background-color: #d6001c;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#navy {
+  background-color: #00205b;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#skyBlue {
+  background-color: #62c6f2;
+  cursor: pointer;
+}
+
+#lightBlue {
+  background-color: #7fa9ae;
+  cursor: pointer;
+}
+
+.main2col-weighted {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.main2col-weighted > div {
+  margin: 10px;
+}
+
+.narrow-col {
+  flex-grow: 1;
+}
+
+.wide-col {
+  flex-grow: 9;
 }
 
 .image-section {
   display: float;
   justify-content: center;
+}
+
+#cardoorgoat {
+  width: 100%;
+  height: auto;
 }
 
 .App {

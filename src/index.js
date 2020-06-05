@@ -6,12 +6,10 @@ import Home from "./home";
 import Play from "./play";
 import StandardPlay from "./standardPlay";
 import HellPlay from "./hellPlay";
+import MysteryPlay from "./mysteryPlay";
+import Answers from "./answers";
 
-function updateState(text) {
-  this.setState({text});
-}
-
-// sidebar navigation
+// top navbar
 class Menu extends React.Component {
   handleClickHome = (e) => {
     e.preventDefault();
@@ -23,14 +21,21 @@ class Menu extends React.Component {
     this.props.updateDisplayCB("Play");
   }
 
+  handleClickAnswers = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Answers");
+  }
+
   render() {
     return (
-      <div className="menu">
-        <h2 id="menuTitle">Menu</h2>
+      <div id="menu" ref="menu">
+        {/* <a id="menuTitle"><img src="../img/logo.png" id="logo"/></a> */}
+        <img src="../img/logo.png" id="logo" onClick={this.handleClickHome}/>
         <a href ='#' onClick={this.handleClickHome}>Home</a>
-        <a href='#' onClick={this.handleClickPlay}>Play</a>
-        <a href='#'>Instructions</a>
+        <a href='#' onClick={this.handleClickAnswers}>Answers</a>
         <a href='#'>About</a>
+        <a href='#'>Instructions</a>
+        <a href='#' onClick={this.handleClickPlay}>Play</a>
       </div>
     );
   }
@@ -55,6 +60,10 @@ class App extends React.Component {
       display = <StandardPlay />;
     } else if (this.state.text === "Hell") {
       display = <HellPlay />;
+    } else if (this.state.text === "Mystery") {
+      display = <MysteryPlay />;
+    } else if (this.state.text === "Answers") {
+      display = <Answers />;
     } else {
       display = <Home />;
     }

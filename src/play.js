@@ -20,15 +20,44 @@ class Play extends React.Component {
     this.props.updateDisplayCB(modes[Math.floor(Math.random()*modes.length)]);
   }
 
+  handleClickMystery = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Mystery");
+  }
+
   render () {
     return (
-      <div className="main">
+      <div className="main1col">
         <h1>Let's Play</h1>
         <p>Select your game mode</p>
-        <div>
-          <button onClick={this.handleClickStd}>Standard</button>
-          <button onClick={this.handleClickHell}>Hell</button>
-          <button onClick={this.handleClickRandom}>Random</button>
+        <div class="buttons">
+          <div class="rowButton" id="lightBlue" onClick={this.handleClickStd}>
+            <span>Standard Monty</span>
+          </div>
+          <div class="rowButton" id="red" onClick={this.handleClickHell}>
+            <span>Hell Monty</span>
+          </div>
+          <div class="rowButton" id="skyBlue" onClick={this.handleClickRandom}>
+            <span>Random Monty</span>
+          </div>
+          <div class="rowButton" id="navy" onClick={this.handleClickMystery}>
+            <span>Mystery Monty</span>
+          </div>
+          <div class="rowButton" >
+            <span>??? Monty</span>
+          </div>
+          <div class="rowButton" >
+            <span>??? Monty</span>
+          </div>
+          <div class="rowButton" >
+            <span>??? Monty</span>
+          </div>
+          <div class="rowButton" >
+            <span>??? Monty</span>
+          </div>
+          <div class="rowButton" >
+            <span>??? Monty</span>
+          </div>
         </div>
       </div>
     );
