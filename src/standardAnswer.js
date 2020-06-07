@@ -1,7 +1,5 @@
-/* this page has the answers to "Standard Monty" */
-
 import React from "react";
-import "./styles.css";
+import "./App.css";
 
 class StandardAnswer extends React.Component {
   render () {
@@ -45,3 +43,4 @@ class StandardAnswer extends React.Component {
 }
 
 export default StandardAnswer;
+

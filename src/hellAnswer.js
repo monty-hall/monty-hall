@@ -1,7 +1,5 @@
-/* this page has the answers to "Hell Monty" */
-
 import React from "react";
-import "./styles.css";
+import "./App.css";
 
 class HellAnswer extends React.Component {
   render () {
@@ -14,3 +12,4 @@ class HellAnswer extends React.Component {
 }
 
 export default HellAnswer;
+

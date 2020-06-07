@@ -1,7 +1,5 @@
-// page for answers
-
 import React from "react";
-import "./styles.css";
+import "./App.css";
 
 class Answers extends React.Component {
 
@@ -67,3 +65,4 @@ class Answers extends React.Component {
 }
 
 export default Answers;
+

@@ -1,0 +1,310 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  margin: 0;
+  text-align: left;
+  background-color: #eeeeee;
+  width: 100%;
+}
+
+h1 {
+  color: #54585a;
+  font-family: "Arial Black";
+  font-size: 40px;
+  text-align: left;
+  column-span: all;
+}
+
+.center {
+  text-align: center;
+  color: #d6001c;
+}
+
+h2 {
+  text-align: left;
+  font-family: "Arial Black";
+  color: #222222;
+}
+
+h3 {
+  text-align: left;
+  font-family: "arial black";
+  color: #222222;
+}
+
+p {
+  color: #000000;
+  font-family: "arial";
+}
+
+#menu {
+  overflow-x: hidden;
+  background-color: #62c6f2;
+  width: 100%;
+  align-content: center;
+  vertical-align: middle;
+}
+
+#menu a {
+  float: right;
+  padding: 14px;
+  color: #000000;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+#menu a:hover {
+  color: #ffffff;
+}
+
+#menuTitle {
+  float: left;
+  color: #cccccc;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+#logo {
+  float: left;
+  height: 30px;
+  width: auto;
+  padding: 12px;
+}
+
+#logo:hover {
+  cursor: pointer;
+}
+
+.main {
+  padding: 16px;
+  padding-left: 150px;
+  padding-right: 150px;
+  column-count: 2;
+  column-gap: 40px;
+}
+
+.main1col {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.main1col > div {
+  margin: 10px;
+}
+
+.text {
+  display: inline-block;
+}
+
+.buttons div {
+  margin: 10px;
+}
+
+.rowButton {
+  border-radius: 10px;
+  padding: 10px 24px;
+  background-color: #777777;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+  cursor: not-allowed;
+}
+
+.rowButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0.19);
+}
+
+.rowButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.rowButton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.rowButton:hover span {
+  padding-right: 15px;
+}
+
+.rowButton:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+#red {
+  background-color: #d6001c;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#navy {
+  background-color: #00205b;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#skyBlue {
+  background-color: #62c6f2;
+  cursor: pointer;
+}
+
+#lightBlue {
+  background-color: #7fa9ae;
+  cursor: pointer;
+}
+
+#gold {
+  background-color: #ffd700;
+  cursor: pointer;
+}
+
+#violet {
+  background-color: #8a2be2;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.main2col-weighted {
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.main2col-weighted > div {
+  margin: 10px;
+}
+
+.narrow-col {
+  float: left;
+  width: 25%;
+}
+
+.wide-col {
+  float: left;
+  margin-left: 20%;
+  width: 65%;
+}
+
+/* div for two buttons: yes and no */
+.yesNo {
+  align-content: center;
+  text-align: center;
+}
+
+.noButton {
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px 24px;
+  background-color: #d6001c;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+.yesButton {
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px 24px;
+  background-color: #00dd00;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
+.noButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0.19);
+}
+
+.noButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.noButton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.yesButton:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0.19);
+}
+
+.yesButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.yesButton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.image-section {
+  display: float;
+  justify-content: center;
+}
+
+#cardoorgoat {
+  width: 100%;
+  height: auto;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+

@@ -1,7 +1,5 @@
-/* page for warning screen before revealing answer */
-
 import React from "react";
-import "./styles.css";
+import "./App.css";
 
 class Warning extends React.Component {
 
@@ -43,3 +41,4 @@ class Warning extends React.Component {
 }
 
 export default Warning;
+

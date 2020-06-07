@@ -1,7 +1,5 @@
-// homepage for website
-
 import React from "react";
-import "./styles.css";
+import "./App.css";
 
 export default function Home() {
   return (
@@ -17,3 +15,4 @@ export default function Home() {
     </div>
   );
 }
+
