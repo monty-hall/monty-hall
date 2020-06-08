@@ -11,6 +11,7 @@ import HellAnswer from "./HellAnswer.js";
 
 
 import './App.css';
+const axios = require("axios");
 
 
 // top navbar
@@ -52,7 +53,7 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			text: "Play",   // display screen
-			mode: "Standard",  // warning screen mode
+			mode: "Standard",  
 			doors: 3,
 			winning_door: null,
 			door_1: null,
@@ -60,17 +61,33 @@ class App extends React.Component {
 			door_2: null,
 			mystery: false
 		};
+		this.updateMontyDoorAPI = async function() {
+			/* POST relevent data to backend
+			and recieve which door monty will reveal
+			*/
+			var params = {
+				monty: this.state.mode,
+				doors: this.state.doors,
+				winning_door: this.state.winning_door,
+				door_1: this.state.door_1
+			}
+			let res = await axios.post("http://127.0.0.1:5000", params);
+			let data = res.data;
+			console.log(data);
+		}
 		this.updateDisplay = (txt) => {this.setState({text:txt})}
 		this.updateMode = (mde) => {this.setState({mode:mde})}
 		this.updateDoors = (d) => {this.setState({doors:d})}
 		this.updateDoor1 = (d) => {
 			this.setState({door_1:d});
+			this.updateMontyDoorAPI();
 			/*do api call asyncronously using axios -> update m_door*/
 		}
 		this.updateMontyDoor = (d) => {this.setState({m_door:d})}
 		this.updateDoor2 = (d) => {this.setState({door_2:d})}
 		this.getMode = () => {return this.state.mode}
 		this.updateMystery = (b) => {this.setState({mystery:b})}
+		this.updateWinner = (d) => {this.setState({winning_door: Math.floor(Math.random() * this.state.doors)})};
 	}
 
 
@@ -88,7 +105,7 @@ class App extends React.Component {
 			display = <Home />
 		} else if (this.state.text === "Play") {
 			display = <Play updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
-			updateMonty={this.updateMode} updateDoors={this.updateDoors} />;
+			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner} />;
 		} else if (this.state.text === "Standard") {
 			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
 			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;

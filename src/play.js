@@ -50,6 +50,7 @@ class Play extends React.Component {
 		if (re.test(e.target.value)) {
 			this.props.updateDoors(e.target.value)
 		}
+		this.props.updateWinningDoor()
 	}
 
         render () {
