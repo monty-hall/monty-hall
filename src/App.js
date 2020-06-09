@@ -2,6 +2,7 @@ import React from 'react';
 import Play from "./play";
 import StandardPlay from "./Standard.js";
 import Home from "./Home.js";
+import Result from "./result.js";
 import Answers from "./Answers.js";
 import Warning from "./Warning.js";
 import StdAnswer from "./StandardAnswer.js";
@@ -69,7 +70,7 @@ class App extends React.Component {
 			door_2: null,
 			mystery: false
 		};
-		this.updateSession = (id) => {this.setState({session:id})}
+		this.updateSession = (id) => {this.setState({session:id})};
 		this.getSession = () => {
 			console.log("get session called");
 			axios.get("http://127.0.0.1:5000/new_session")
@@ -77,7 +78,7 @@ class App extends React.Component {
 				this.setState({session:response.data.session_id});
 			} ,(error) => {console.log(error);}
 			);
-		}
+		};
 		this.updateMontyDoorAPI = async function(d) {
 			axios.post("http://127.0.0.1:5000/game", {
 				monty: this.state.mode,
@@ -89,7 +90,7 @@ class App extends React.Component {
 				this.setState({m_door: response.data.monty_door});
 			} ,(error) => {console.log(error);}
 			);
-		}
+		};
 		this.addToDb = (d) => {
 			axios.post("http://127.0.0.1:5000/end", {
 				sess: this.state.session,
@@ -100,22 +101,22 @@ class App extends React.Component {
 				m_door: this.state.m_door,
 				door_2: d
 			});
-		}
-		this.updateDisplay = (txt) => {this.setState({text:txt})}
-		this.updateMode = (mde) => {this.setState({mode:mde})}
-		this.updateDoors = (d) => {this.setState({doors:d})}
+		};
+		this.updateDisplay = (txt) => {this.setState({text:txt})};
+		this.updateMode = (mde) => {this.setState({mode:mde})};
+		this.updateDoors = (d) => {this.setState({doors:d})};
 		this.updateDoor1 = (d) => {
 			this.setState({door_1:d});
 			this.updateMontyDoorAPI(d);
 			/*do api call asyncronously using axios -> update m_door*/
-		}
+		};
 		this.updateMontyDoor = (d) => {this.setState({m_door:d})}
 		this.updateDoor2 = (d) => {
 			this.setState({door_2:d});
 			this.addToDb(d);
-			}
-		this.getMode = () => {return this.state.mode}
-		this.updateMystery = (b) => {this.setState({mystery:b})}
+		};
+		this.getMode = () => {return this.state.mode};
+		this.updateMystery = (b) => {this.setState({mystery:b})};
 		this.updateWinner = (d) => {
 			this.setState({
 				winning_door: Math.floor(Math.random() * this.state.doors),
@@ -124,6 +125,8 @@ class App extends React.Component {
 				door_2: null
 			})
 		};
+		this.resetDoors = () => {this.setState({door_1: null, door_2: null, m_door: null, winning_door: null})};
+		this.toPlayScreen = () => {this.setState({monty: null, door_1: null, door_2: null, m_door: null, winning_door: null})};
 	}
 
 
@@ -143,12 +146,13 @@ class App extends React.Component {
 			display = <Play updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
 			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner}
 			newSession={this.getSession} />;
-		} else if (this.state.text === "Standard") {
-			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
-			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;
 		} else if (this.state.text == "Standard" && this.state.door_1 != null && this.state.door_2 != null) {
 			/* display winning / loosing screen + restart
 			*/
+			display = <Result resetDoors={this.resetDoors} toPlayScreen={this.toPlayScreen}/>
+		} else if (this.state.text === "Standard") {
+			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
+			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;
 		} else if (this.state.text === "Answers") {
 			display = <Answers updateDisplayCB={this.updateDisplay}
 			updateModeCB={this.updateMode}/>;
