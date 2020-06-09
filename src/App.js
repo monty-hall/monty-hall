@@ -12,6 +12,13 @@ import HellAnswer from "./HellAnswer.js";
 
 import './App.css';
 const axios = require("axios");
+let axiosConfig = {
+  headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Access-Control-Allow-Origin": "*",
+  }
+};
+
 
 
 // top navbar
@@ -52,6 +59,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			session: null,
 			text: "Play",   // display screen
 			mode: "Standard",  
 			doors: 3,
@@ -61,33 +69,61 @@ class App extends React.Component {
 			door_2: null,
 			mystery: false
 		};
-		this.updateMontyDoorAPI = async function() {
-			/* POST relevent data to backend
-			and recieve which door monty will reveal
-			*/
-			var params = {
+		this.updateSession = (id) => {this.setState({session:id})}
+		this.getSession = () => {
+			console.log("get session called");
+			axios.get("http://127.0.0.1:5000/new_session")
+			.then((response) => {
+				this.setState({session:response.data.session_id});
+			} ,(error) => {console.log(error);}
+			);
+		}
+		this.updateMontyDoorAPI = async function(d) {
+			axios.post("http://127.0.0.1:5000/game", {
 				monty: this.state.mode,
 				doors: this.state.doors,
 				winning_door: this.state.winning_door,
-				door_1: this.state.door_1
-			}
-			let res = await axios.post("http://127.0.0.1:5000", params);
-			let data = res.data;
-			console.log(data);
+				door_1: d
+			} , axiosConfig)
+			.then((response) => {
+				this.setState({m_door: response.data.monty_door});
+			} ,(error) => {console.log(error);}
+			);
+		}
+		this.addToDb = (d) => {
+			axios.post("http://127.0.0.1:5000/end", {
+				sess: this.state.session,
+				monty: this.state.mode,
+				doors: this.state.doors,
+				winning_door: this.state.winning_door,
+				door_1: this.state.door_1,
+				m_door: this.state.m_door,
+				door_2: d
+			});
 		}
 		this.updateDisplay = (txt) => {this.setState({text:txt})}
 		this.updateMode = (mde) => {this.setState({mode:mde})}
 		this.updateDoors = (d) => {this.setState({doors:d})}
 		this.updateDoor1 = (d) => {
 			this.setState({door_1:d});
-			this.updateMontyDoorAPI();
+			this.updateMontyDoorAPI(d);
 			/*do api call asyncronously using axios -> update m_door*/
 		}
 		this.updateMontyDoor = (d) => {this.setState({m_door:d})}
-		this.updateDoor2 = (d) => {this.setState({door_2:d})}
+		this.updateDoor2 = (d) => {
+			this.setState({door_2:d});
+			this.addToDb(d);
+			}
 		this.getMode = () => {return this.state.mode}
 		this.updateMystery = (b) => {this.setState({mystery:b})}
-		this.updateWinner = (d) => {this.setState({winning_door: Math.floor(Math.random() * this.state.doors)})};
+		this.updateWinner = (d) => {
+			this.setState({
+				winning_door: Math.floor(Math.random() * this.state.doors),
+				door_1: null,
+				m_door: null,
+				door_2: null
+			})
+		};
 	}
 
 
@@ -101,11 +137,12 @@ class App extends React.Component {
 			updateDoor = this.updateDoor2
 		}
 		let display;
-		if (this.state.text == "Home"){
+		if (this.state.text === "Home"){
 			display = <Home />
 		} else if (this.state.text === "Play") {
 			display = <Play updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
-			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner} />;
+			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner}
+			newSession={this.getSession} />;
 		} else if (this.state.text === "Standard") {
 			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
 			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;

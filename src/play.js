@@ -2,55 +2,58 @@ import React from "react";
 import "./App.css";
 
 class Play extends React.Component {
+	changeDisplayAndMonty = (m) => {
+		this.props.updateMonty(m);
+		this.props.newSession();
+		this.props.updateWinningDoor();
+		this.props.updateDisplayCB("Standard");
+	}
+
         handleClickStd = (e) => {
                 e.preventDefault();
-                this.props.updateDisplayCB("Standard");
-		this.props.updateMonty("Standard");
+		this.changeDisplayAndMonty("Standard");
         }
 
         handleClickHell = (e) => {
                 e.preventDefault();
-                this.props.updateDisplayCB("Standard");
-		this.props.updateMonty("Hell");
+		this.changeDisplayAndMonty("Hell");
         }
 
         handleClickAngelic = (e) => {
                 e.preventDefault();
-                this.props.updateDisplayCB("Standard");
-		this.props.updateMonty("Angelic");
+		this.changeDisplayAndMonty("Angelic");
         }
 
         handleClickMind = (e) => {
                 e.preventDefault();
                 this.props.updateDisplayCB("Standard");
-		this.props.updateMonty("Mind");
+		this.changeDisplayAndMonty("Mind");
         }
 
         handleClickRandom = (e) => {
                 var modes = ["Standard","Hell","Angelic","Mind"];
                 e.preventDefault();
-		this.props.updateDisplayCB("Standard");
-                this.props.updateMonty(modes[Math.floor(Math.random()*modes.length)]);
+                var monty = modes[Math.floor(Math.random()*modes.length)];
+		this.changeDisplayAndMonty(monty);
 
 
         }
 
         handleClickMystery = (e) => {
                 e.preventDefault();
-                this.props.updateDisplayCB("Standard");
 		this.props.updateMystery(true);
                 var modes = ["Standard","Hell","Angelic","Mind"];
-                this.props.updateMonty(modes[Math.floor(Math.random()*modes.length)]);
+                var monty = modes[Math.floor(Math.random()*modes.length)];
+		this.changeDisplayAndMonty(monty);
         }
-
 
 	changeDoors = (e) => {
 		console.log(e.target.value)
 		const re = /^[0-9\b]+$/;
 		if (re.test(e.target.value)) {
-			this.props.updateDoors(e.target.value)
+			this.props.updateDoors(parseInt(e.target.value));
 		}
-		this.props.updateWinningDoor()
+		this.props.updateWinningDoor();
 	}
 
         render () {
