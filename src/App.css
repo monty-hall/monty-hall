@@ -74,6 +74,16 @@ p {
   font-family: "arial";
 }
 
+label {
+  font-family: "arial";
+  float: left;
+  padding: 0.25em 1em 0 0;
+}
+
+#numDoors {
+  width: 50px;
+}
+
 #menu {
   overflow-x: hidden;
   background-color: #62c6f2;
@@ -291,6 +301,11 @@ p {
   top: 0;
   right: -20px;
   transition: 0.5s;
+}
+
+.door {
+  width: 10%;
+  padding: 10px;
 }
 
 .image-section {

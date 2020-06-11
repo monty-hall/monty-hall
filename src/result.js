@@ -15,7 +15,7 @@ class Result extends React.Component {
 		return (
 			<div>
 			<button onClick={this.handleReset}> Play Again </button>
-			<button onClick={this.handleFinish}> Play a new gaim </button>
+			<button onClick={this.handleFinish}> Play a new game </button>
 			</div>
 		)
 	}
