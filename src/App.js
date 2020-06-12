@@ -67,13 +67,13 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			session: null,
-			text: "Play",   // display screen
+			text: "Home",   // display screen
 			mode: "Standard",  
 			doors: 3,
 			winning_door: null,
-			door_1: null,
-			m_door: null,
-			door_2: null,
+			door_1: null,	// first door selected
+			m_door: null,	// door Monty reveals
+			door_2: null,	// second door selected (on switch)
 			mystery: false
 		};
 		this.updateSession = (id) => {this.setState({session:id})};
@@ -132,7 +132,7 @@ class App extends React.Component {
 			})
 		};
 		this.resetDoors = () => {this.setState({door_1: null, door_2: null, m_door: null, winning_door: null})};
-		this.toPlayScreen = () => {this.setState({monty: null, door_1: null, door_2: null, m_door: null, winning_door: null})};
+		this.toPlayScreen = () => {this.setState({text: "Play", monty: null, door_1: null, door_2: null, m_door: null, winning_door: null})};
 	}
 
 

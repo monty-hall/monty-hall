@@ -80,6 +80,16 @@ label {
   padding: 0.25em 1em 0 0;
 }
 
+figure {
+  display: inline-block;
+}
+
+figcaption {
+  font-family: "arial";
+  font-size: 14px;
+  text-align: left;
+}
+
 #numDoors {
   width: 50px;
 }
@@ -141,6 +151,22 @@ label {
 
 .text {
   display: inline-block;
+}
+
+/* for small images placed among text */
+.inline-img-small {
+  width: 250px;
+  height: auto;
+  border: 3px solid #d6001c;
+}
+
+/* for large images placed among text */
+.inline-img-large {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border: 3px solid #62c6f2;
 }
 
 .buttons div {
@@ -303,8 +329,15 @@ label {
   transition: 0.5s;
 }
 
+/* closed door image */
 .door {
   width: 10%;
+  padding: 10px;
+}
+
+/* open door image */
+.open-door {
+  width: 13%;
   padding: 10px;
 }
 

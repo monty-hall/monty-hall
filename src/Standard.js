@@ -1,3 +1,5 @@
+/* interface for playing the game */
+
 import "./App.css";
 import React from 'react';
 
@@ -13,10 +15,13 @@ class StandardPlay extends React.Component {
     for (i=0; i<this.props.doors; i++){
       /* use door_1 and monty_door if not null to style those doors*/
       if (this.props.door_1 != null && this.props.door_1 === i){
-        door_items.push(<img src="../img/selected-door.png" className="door" onClick={this.handleClick} />)
+        // mark selected door
+        door_items.push(<img src="../img/selected-door.png" className="door" id={i} onClick={this.handleClick} />)
       } else if (this.props.monty_door != null && this.props.monty_door === i){
-        door_items.push(<button id={i} onClick={this.handleClick}> Door {i} REVEALED TO HAVE GOAT </button>)
+        // reveal goat(s) - after user makes first selection
+        door_items.push(<img src="../img/open_door_goat.png" className="open-door" id={i} onClick={this.handleClick} />)
       } else {
+        // default closed door
         door_items.push(<img src="../img/closed-door.png" className="door" id={i} onClick={this.handleClick} />)
       }
     }
