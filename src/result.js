@@ -23,7 +23,7 @@ class Result extends React.Component {
 			<h1> {result} </h1>
 			<h3> Play again? </h3>
 			<button onClick={this.handleReset}> Play Again </button>
-			<button onClick={this.handleFinish}> Play a new game </button>
+			<button onClick={this.handleFinish}> {this.props.t} </button>
 			</div>
 		)
 	}

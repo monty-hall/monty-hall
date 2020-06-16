@@ -1,12 +1,12 @@
 import React from 'react';
 import Play from "./play";
 import StandardPlay from "./Standard.js";
-import Home from "./home.js";
+import Home from "./Home.js";
 import Result from "./result.js";
-import Answers from "./answers.js";
-import Warning from "./warning.js";
+import Answers from "./Answers.js";
+import Warning from "./Warning.js";
 import StdAnswer from "./standardAnswer.js";
-import HellAnswer from "./hellAnswer.js";
+import HellAnswer from "./HellAnswer.js";
 import Sandbox from "./sandbox.js";
 
 
@@ -30,7 +30,7 @@ class Menu extends React.Component {
 
 	handleClickPlay = (e) => {
 		e.preventDefault();
-		this.props.updateDisplayCB("Play");
+		this.props.updateDisplayCB("Standard");
 	}
 
 	handleClickAnswers = (e) => {
@@ -52,7 +52,9 @@ class Menu extends React.Component {
 			<a href='#' onClick={this.handleClickAnswers}>Answers</a>
 			<a href='#'>About</a>
 			<a href='#'>Instructions</a>
-			<a href='#' onClick={this.handleClickSandbox}>Sandbox</a>
+			{this.props.sandbox &&
+				<a href='#' onClick={this.handleClickSandbox}>Sandbox</a>
+			}
 			<a href='#' onClick={this.handleClickPlay}>Play</a>
 			</div>
 		);
@@ -157,9 +159,9 @@ class App extends React.Component {
 			door_2: null,
 			m_door: null,
 			winning_door: null,
-			sandboxAvailable=true
+			sandboxAvailable:true
 		})
-		window.localStorage.setItem('user', JSON.stringify({session: id, sandboxAvailable: true}));
+		window.localStorage.setItem('user', JSON.stringify({session: this.state.session, sandboxAvailable: true}));
 	};
 	toSandboxScreen = () => {
 		this.setState({
@@ -169,7 +171,7 @@ class App extends React.Component {
 			door_2: null,
 			m_door: null,
 			winning_door: null,
-			sandboxAvailable=true
+			sandboxAvailable:true
 		})
 	};
 
@@ -195,7 +197,7 @@ class App extends React.Component {
 				this.setState({session: stored.session, sandboxAvailable: stored.sandboxAvailable});
 			}
 		}
-		if (this.state.sandboxAvailable === false && this.state.monty == null){
+		if ((this.state.sandboxAvailable === false || this.state.text === "Standard") && this.state.mode == null){
 			var modes = ["Standard","Hell","Angelic","Mind"];
 			var monty = modes[Math.floor(Math.random()*modes.length)];
 			this.setState({mode:monty});
@@ -206,8 +208,9 @@ class App extends React.Component {
 			updateDoor = this.updateDoor2
 		}
 		let display;
-		if (this.state.text === "Home"){
-			display = <Home />
+		if (this.state.sandboxAvailable === false && this.state.door_1 != null && this.state.door_2 != null){
+			display = <Result selected={this.state.door_2} correct={this.state.winning_door}
+			resetDoors={this.resetDoors} toPlayScreen={this.toSandboxMode} t={"Finish and play sandbox mode"}/>
 		} else if (this.state.sandboxAvailable === false){
 			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
 			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;
@@ -217,13 +220,10 @@ class App extends React.Component {
 		} else if (this.state.text === "Sandbox") {
 			display = <Sandbox updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
 			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner}/>;
-		} else if (this.state.sandboxAvailable === false && this.state.door_1 != null && this.state.door_2 != null){
-			display = <Result selected={this.state.door_2} correct={this.state.winning_door}
-			resetDoors={this.resetDoors} toPlayScreen={this.toSandboxMode}/>
 		} else if (this.state.text === "Standard" && this.state.door_1 != null && this.state.door_2 != null) {
 			// display winning / loosing screen + restart
 			display = <Result selected={this.state.door_2} correct={this.state.winning_door} 
-			resetDoors={this.resetDoors} toPlayScreen={this.toSandboxScreen}/>
+			resetDoors={this.resetDoors} toPlayScreen={this.toSandboxScreen} t={"New Game"}/>
 		} else if (this.state.text === "Standard") {
 			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
 			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;
@@ -240,13 +240,15 @@ class App extends React.Component {
 		} else if (this.state.text === "Stats") {
 			// DISPLAY STATISTICS
 			display = null;
+		} else if (this.state.tex === "Home") {
+			display = <Home />;
 		} else {
 			display = <Home />;
 		}
 
 		return (
 			<div>
-			<Menu updateDisplayCB={this.updateDisplay}/>,
+			<Menu updateDisplayCB={this.updateDisplay} sandbox={this.state.sandboxAvailable}/>,
 			{display}
 			</div>
 		);
