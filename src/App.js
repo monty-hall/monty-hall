@@ -21,7 +21,6 @@ let axiosConfig = {
 };
 
 
-
 // top navbar
 class Menu extends React.Component {
 	handleClickHome = (e) => {
@@ -57,6 +56,11 @@ class Menu extends React.Component {
 
 
 class App extends React.Component {
+	/*
+	 * TODO: move constructor functions to class functions
+	 * make session creation add cookie
+	 * check for cookie and if it does not exist put in default mode with random monty
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -126,7 +130,9 @@ class App extends React.Component {
 			})
 		};
 		this.resetDoors = () => {this.setState({door_1: null, door_2: null, m_door: null, winning_door: null})};
-		this.toPlayScreen = () => {this.setState({monty: null, door_1: null, door_2: null, m_door: null, winning_door: null})};
+		this.toPlayScreen = () => {this.setState({
+			text: "Play", monty: null, door_1: null, door_2: null, m_door: null, winning_door: null
+		})};
 	}
 
 
@@ -149,7 +155,8 @@ class App extends React.Component {
 		} else if (this.state.text == "Standard" && this.state.door_1 != null && this.state.door_2 != null) {
 			/* display winning / loosing screen + restart
 			*/
-			display = <Result resetDoors={this.resetDoors} toPlayScreen={this.toPlayScreen}/>
+			display = <Result selected={this.state.door_2} correct={this.state.winning_door} 
+			resetDoors={this.resetDoors} toPlayScreen={this.toPlayScreen}/>
 		} else if (this.state.text === "Standard") {
 			display = <StandardPlay monty={this.state.mode} doors={this.state.doors} updateDoor={updateDoor}
 			door_1={this.state.door_1} monty_door={this.state.m_door} mystery={this.state.mystery}/>;

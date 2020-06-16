@@ -12,10 +12,18 @@ class Result extends React.Component {
 	}
 
 	render () {
+		var result;
+		if (this.props.winningDoor === this.props.door_2){
+			result = "YOU HAVE WON!!!!";
+		} else {
+			result = "You lost.";
+		}
 		return (
 			<div>
+			<h1> {result} </h1>
+			<h3> Play again? </h3>
 			<button onClick={this.handleReset}> Play Again </button>
-			<button onClick={this.handleFinish}> Play a new gaim </button>
+			<button onClick={this.handleFinish}> Play a new game </button>
 			</div>
 		)
 	}
