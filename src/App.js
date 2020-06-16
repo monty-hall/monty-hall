@@ -1,13 +1,13 @@
 import React from 'react';
 import Play from "./play";
 import StandardPlay from "./Standard.js";
-import Home from "./Home.js";
+import Home from "./home.js";
 import Result from "./result.js";
-import Answers from "./Answers.js";
-import Warning from "./Warning.js";
-import StdAnswer from "./StandardAnswer.js";
-import HellAnswer from "./HellAnswer.js";
-
+import Answers from "./answers.js";
+import Warning from "./warning.js";
+import StdAnswer from "./standardAnswer.js";
+import HellAnswer from "./hellAnswer.js";
+import Sandbox from "./sandbox.js";
 
 
 
@@ -38,6 +38,11 @@ class Menu extends React.Component {
 		this.props.updateDisplayCB("Answers");
 	}
 
+	handleClickSandbox = (e) => {
+		e.preventDefault();
+		this.props.updateDisplayCB("Sandbox");
+	}
+
 	render() {
 		return (
 			<div id="menu" ref="menu">
@@ -47,6 +52,7 @@ class Menu extends React.Component {
 			<a href='#' onClick={this.handleClickAnswers}>Answers</a>
 			<a href='#'>About</a>
 			<a href='#'>Instructions</a>
+			<a href='#' onClick={this.handleClickSandbox}>Sandbox</a>
 			<a href='#' onClick={this.handleClickPlay}>Play</a>
 			</div>
 		);
@@ -65,13 +71,13 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			session: null,
-			text: "Play",   // display screen
+			text: "Home",   // display screen
 			mode: "Standard",  
 			doors: 3,
 			winning_door: null,
-			door_1: null,
-			m_door: null,
-			door_2: null,
+			door_1: null,	// first door selected
+			m_door: null,	// door Monty reveals
+			door_2: null,	// second door selected (on switch)
 			mystery: false
 		};
 		this.updateSession = (id) => {this.setState({session:id})};
@@ -130,9 +136,7 @@ class App extends React.Component {
 			})
 		};
 		this.resetDoors = () => {this.setState({door_1: null, door_2: null, m_door: null, winning_door: null})};
-		this.toPlayScreen = () => {this.setState({
-			text: "Play", monty: null, door_1: null, door_2: null, m_door: null, winning_door: null
-		})};
+		this.toPlayScreen = () => {this.setState({text: "Play", monty: null, door_1: null, door_2: null, m_door: null, winning_door: null})};
 	}
 
 
@@ -152,7 +156,11 @@ class App extends React.Component {
 			display = <Play updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
 			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner}
 			newSession={this.getSession} />;
-		} else if (this.state.text == "Standard" && this.state.door_1 != null && this.state.door_2 != null) {
+		} else if (this.state.text === "Sandbox") {
+			display = <Sandbox updateDisplayCB={this.updateDisplay} updateMystery={this.updateMystery} 
+			updateMonty={this.updateMode} updateDoors={this.updateDoors} updateWinningDoor={this.updateWinner}
+			newSession={this.getSession} />;
+		} else if (this.state.text === "Standard" && this.state.door_1 != null && this.state.door_2 != null) {
 			/* display winning / loosing screen + restart
 			*/
 			display = <Result selected={this.state.door_2} correct={this.state.winning_door} 
@@ -169,7 +177,7 @@ class App extends React.Component {
 		} else if (this.state.text === "StandardAnswer") {
 			display = <StdAnswer />;
 		} else if (this.state.text === "HellAnswer") {
-			display = <HellAnswer />
+			display = <HellAnswer />;
 		} else {
 			display = <Home />;
 		}
