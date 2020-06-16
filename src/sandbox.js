@@ -4,7 +4,6 @@ import "./App.css";
 class Sandbox extends React.Component {
 	changeDisplayAndMonty = (m) => {
 		this.props.updateMonty(m);
-		this.props.newSession();
 		this.props.updateWinningDoor();
 		this.props.updateDisplayCB("Standard");
 	}
