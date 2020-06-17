@@ -194,7 +194,18 @@ class App extends React.Component {
 				);
 			} else {
 				const stored = JSON.parse(res);
-				this.setState({session: stored.session, sandboxAvailable: stored.sandboxAvailable});
+				if (stored == null || stored.session == null) {
+					axios.get("http://127.0.0.1:5000/new_session")
+					.then((response) => {
+						window.localStorage.setItem('user', JSON.stringify({
+							session: response.data.session_id, sandboxAvailable: false
+						}));
+						this.setState({session:response.data.session_id});
+						} ,(error) => {console.log(error);}
+					);
+					} else {
+						this.setState({session: stored.session, sandboxAvailable: stored.sandboxAvailable});
+					}
 			}
 		}
 		if ((this.state.sandboxAvailable === false || this.state.text === "Standard") && this.state.mode == null){
