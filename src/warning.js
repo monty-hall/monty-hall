@@ -10,6 +10,10 @@ class Warning extends React.Component {
       this.props.updateDisplayCB("StandardAnswer");
     } else if (mode === "Hell") {
       this.props.updateDisplayCB("HellAnswer");
+    } else if (mode === "Angelic") {
+      this.props.updateDisplayCB("AngelicAnswer");
+    } else if (mode === "Mind-Reading") {
+      this.props.updateDisplayCB("MindAnswer");
     } else {
       this.props.updateDisplayCB("Answers");
     }

@@ -1,12 +1,14 @@
 import React from 'react';
 import Play from "./play";
 import StandardPlay from "./Standard.js";
-import Home from "./Home.js";
+import Home from "./home.js";
 import Result from "./result.js";
-import Answers from "./Answers.js";
-import Warning from "./Warning.js";
+import Answers from "./answers.js";
+import Warning from "./warning.js";
 import StdAnswer from "./standardAnswer.js";
-import HellAnswer from "./HellAnswer.js";
+import HellAnswer from "./hellAnswer.js";
+import AngelicAnswer from "./angelicAnswer.js";
+import MindAnswer from "./mindAnswer.js";
 import Sandbox from "./sandbox.js";
 
 
@@ -248,10 +250,14 @@ class App extends React.Component {
 			display = <StdAnswer />;
 		} else if (this.state.text === "HellAnswer") {
 			display = <HellAnswer />;
-		} else if (this.state.text === "Stats") {
+		} else if (this.state.text === "AngelicAnswer") {
+			display = <AngelicAnswer />;
+	 	} else if (this.state.text === "MindAnswer") {
+	 		display = <MindAnswer />;
+	 	} else if (this.state.text === "Stats") {
 			// DISPLAY STATISTICS
 			display = null;
-		} else if (this.state.tex === "Home") {
+		} else if (this.state.text === "Home") {
 			display = <Home />;
 		} else {
 			display = <Home />;
