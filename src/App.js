@@ -52,6 +52,7 @@ class Menu extends React.Component {
 			<a href='#' onClick={this.handleClickAnswers}>Answers</a>
 			<a href='#'>About</a>
 			<a href='#'>Instructions</a>
+			<a href='#' onClick={this.props.logOff}> End Session </a>
 			{this.props.sandbox &&
 				<a href='#' onClick={this.handleClickSandbox}>Sandbox</a>
 			}
@@ -90,7 +91,7 @@ class App extends React.Component {
 		// resets state for next user
 		this.setState({
 			session: null, 
-			sandbox_available: false,
+			sandboxAvailable: false,
 			text: "Stats",
 			mode: "Standard",
 			doors: 3,
@@ -100,9 +101,18 @@ class App extends React.Component {
 			door_2: null,	
 			mystery: true 
 		});
+		window.localStorage.clear();
+		this.getSession();
 	}
 	getSession = () => {
-		console.log("get session called");
+		axios.get("http://127.0.0.1:5000/new_session")
+		.then((response) => {
+			window.localStorage.setItem('user', JSON.stringify({
+				session: response.data.session_id, sandboxAvailable: false
+			}));
+			this.setState({session:response.data.session_id});
+			} ,(error) => {console.log(error);}
+		);
 	};
 	updateMontyDoorAPI = async function(d) {
 		axios.post("http://127.0.0.1:5000/game", {
@@ -184,28 +194,14 @@ class App extends React.Component {
 		if (this.state.session == null) {
 			const res = window.localStorage.getItem('user');
 			if (res == null){
-				axios.get("http://127.0.0.1:5000/new_session")
-				.then((response) => {
-					window.localStorage.setItem('user', JSON.stringify({
-						session: response.data.session_id, sandboxAvailable: false
-					}));
-					this.setState({session:response.data.session_id});
-					} ,(error) => {console.log(error);}
-				);
+				this.getSession()
 			} else {
 				const stored = JSON.parse(res);
 				if (stored == null || stored.session == null) {
-					axios.get("http://127.0.0.1:5000/new_session")
-					.then((response) => {
-						window.localStorage.setItem('user', JSON.stringify({
-							session: response.data.session_id, sandboxAvailable: false
-						}));
-						this.setState({session:response.data.session_id});
-						} ,(error) => {console.log(error);}
-					);
-					} else {
-						this.setState({session: stored.session, sandboxAvailable: stored.sandboxAvailable});
-					}
+					this.getSession()
+				} else {
+					this.setState({session: stored.session, sandboxAvailable: stored.sandboxAvailable});
+				}
 			}
 		}
 		if ((this.state.sandboxAvailable === false || this.state.text === "Standard") && this.state.mode == null){
@@ -259,7 +255,8 @@ class App extends React.Component {
 
 		return (
 			<div>
-			<Menu updateDisplayCB={this.updateDisplay} sandbox={this.state.sandboxAvailable}/>,
+			<Menu updateDisplayCB={this.updateDisplay} sandbox={this.state.sandboxAvailable} 
+			logOff={this.logOff}/>,
 			{display}
 			</div>
 		);
