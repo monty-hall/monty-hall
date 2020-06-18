@@ -14,6 +14,18 @@ class Answers extends React.Component {
     this.props.updateDisplayCB("Warning");
     this.props.updateModeCB("Hell");
   }
+
+  handleClickAngelic = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Warning");
+    this.props.updateModeCB("Angelic");
+  }
+
+  handleClickMind = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Warning");
+    this.props.updateModeCB("Mind-Reading");
+  }
   
   render() {
     return (
@@ -31,10 +43,10 @@ class Answers extends React.Component {
               <div className="rowButton" id="red" onClick={this.handleClickHell}>
                 <span>Hell Monty</span>
               </div>
-              <div className="rowButton" id="gold">
+              <div className="rowButton" id="gold" onClick={this.handleClickAngelic}>
                 <span>Angelic Monty</span>
               </div>
-              <div className="rowButton" id="violet">
+              <div className="rowButton" id="violet" onClick={this.handleClickMind}>
                 <span>Mind-Reading Monty</span>
               </div>
             </div>  
@@ -56,7 +68,7 @@ class Answers extends React.Component {
               explanation to the correct strategy for this problem.  She then received
               quite a bit of public backlash as many people, including Ph.Ds, about how
               she was wrong (even though she was right!).  Although we may not be the 
-              world's smartest people, let's see if you'll believe our advice.</p>
+              world's smartest people, let's see if you'll take our advice.</p>
           </div>
         </div>
       </div>

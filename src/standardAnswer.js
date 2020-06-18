@@ -38,14 +38,26 @@ class StandardAnswer extends React.Component {
         <div className="main1col">
           <div className="text">
             <h3>It's all about probability!</h3>
-            <p> abcdef ghijkl mnopqrs tu vw xyz a b cde fghij klmnop qrs tuvwx yz
-              abcdefghijkl mnopqrstuvwxyz abcd efghij klmn op qrs tu vwxyz
-              abcd efghijklmnop qrstuvwxyz abcdefg hijklmnopqr stuv wxyz
-              abcdefghij klmnopqrstuvwxyz ab cdefg hi jklmn opqrst uvwxyz
-              abcd efghijkl mnopqrstuvwxyz abcdefghijklmn opqrstuvwxyz </p>
+            <p> Below is a probability tree that outlines every possible outcome of the game, assuming that
+            you choose Door 1.  In the standard game, the car is randomly placed 
+            behind one of the three doors, meaning that there is an equal chance that the car is behind 
+            each of the doors.  Now, Monty must choose a door that does not have the car behind it.  If the
+            car is not behind Door 1, then Monty only has one option for which door he can open (which means the other
+              door must have a car behind it!)  Otherwise, he then has a 1/2 chance of opening either door.  So there's 
+            a 2/3 chance you are in the scenario where the other remaining door has the car behind it.  From the table
+            below, you can simply sum the total probabilities of the scenarios and see that switching gives you a car 
+            2/3 of the time.</p>
             <img className="inline-img-large" 
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Monty_tree_door1.svg/525px-Monty_tree_door1.svg.png" 
             alt="tree"/>
+          </div>
+        </div>
+        <div className="main1col">
+          <div className="text">
+            <h3>Still not convinced?</h3>
+            <p> If you're still not convinced, you can try out Sandbox Mode and keep track of your 
+            results.  A <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo simulation</a> in 
+            Sandbox Mode may finally convince you <i>(*wink*)</i>.</p>
           </div>
         </div>
       </div>

@@ -6,16 +6,16 @@ import java.util.*;
 abstract class Monty {
 	public int n_doors, chosen_door, prize;
 
-	Monty(int n, int c, int p) {
-		n_doors = n;
-		chosen_door = c;
-		prize = p;
-		if(chosen_door<1 || chosen_door > n_doors)
-		{
-			System.out.println("Your have chosen an invalid door");
-			//do something else here!
-			System.exit(1);
-		}
+	Monty(int n_doors, int chosen_door, int prize) {
+		this.n_doors = n_doors;
+		this.chosen_door = chosen_door;
+		this.prize = prize;
+		// if(chosen_door<1 || chosen_door > n_doors)
+		// {
+		// 	System.out.println("Your have chosen an invalid door");
+		// 	//do something else here!
+		// 	System.exit(1);
+		// }
 	}
 
 	public boolean check_win() {
@@ -31,9 +31,9 @@ abstract class Monty {
 	}
 
 	public void execute() {
-		System.out.println("What door do you pick?");
-		Scanner door = new Scanner(System.in);
-		chosen_door = Integer.parseInt(door.next());
+		// System.out.println("What door do you pick?");
+		// Scanner door = new Scanner(System.in);
+		// chosen_door = Integer.parseInt(door.next());
 		int open_door = open_door();
 		if (open_door != 0) {
 			System.out.println("Monty opens the door " + open_door);
@@ -53,7 +53,7 @@ abstract class Monty {
 
 				int temp = scan.nextInt();
 				assert temp <= n_doors;
-				if(temp<1 || temp > n_doors)
+				if(temp < 1 || temp > n_doors)
 				{
 					System.out.println("Your have chosen an invalid door");
 					//do something else here!
@@ -128,6 +128,35 @@ class AngelicMonty extends Monty {
 	}
 }
 
+class SandboxMonty extends Monty {
+	private double probability;
+	SandboxMonty(int n_doors, int chosen_door, int prize, double probability) {
+		super(n_doors, chosen_door, prize);
+		this.probability = probability;
+	}
+
+	public int open_door() {
+		Random rand = new Random();
+		// Open leftmost door with a probability p
+		if (rand.nextDouble() < this.probability) {
+			for (int i = 1; i <= n_doors; ++i) {
+				if (i != prize && i != chosen_door)
+					return i;
+			}
+		}
+		// Open right most door with a prbability 1-p
+		else {
+			for (int i = n_doors; i > 0; --i) {
+				if (i != prize && i != chosen_door)
+					return i;
+			}
+		}
+		return 0;
+	}
+}
+
+
+/**************************************************************************************************/
 
 //Names for the next two Monty's are not final, feel free to change them to something that sounds better
 
@@ -141,8 +170,8 @@ class PreparedMonty extends Monty{ //this is monty #7 from wikipedia, right afte
 		int result = 0;
 		int possible_result = 0;
 		while (possible_result == 0 || possible_result == prize) {
-				Random rand = new Random();
-	    		possible_result = rand.nextInt(n_doors) + 1;
+			Random rand = new Random();
+	    	possible_result = rand.nextInt(n_doors) + 1;
 
 		}
 		if(possible_result!= chosen_door)
