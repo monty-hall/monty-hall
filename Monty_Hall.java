@@ -82,6 +82,6 @@ public class Monty_Hall {
         else if (monty_type == SANDBOX) { m = new SandboxMonty(n_doors, chosen_door, prize, probability); }
 
         m.execute();
-        System.out.println("Prize was behind the door " + prize);
+
     }
 } 
