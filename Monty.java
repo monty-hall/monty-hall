@@ -200,7 +200,6 @@ class SandboxMonty extends Monty {
 		System.out.print("Set prize behind door #");
 		Scanner scan = new Scanner(System.in);
 		set_prize(scan.nextInt());
-		System.out.println();
 		System.out.println("Enter an N x N probability matrix:");
 		load_matrix();
 
