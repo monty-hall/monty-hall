@@ -2,6 +2,29 @@
 
 import java.util.*;
 
+class MontyFactory{
+	
+	public Monty getMonty(int n_doors, int chosen_door, int prize, double probability, String monty_type)
+	{
+		Monty m = null;
+		if(monty_type.equals("--random"))
+		{
+			String[] list = {"--regular","--evil","--angelic","--prepared","--probabilistic","--sandbox"};
+			Random r = new Random();
+			monty_type = list[r.nextInt(list.length)];
+		}
+		if (monty_type.equals("--regular")) { m = new RegularMonty(n_doors, chosen_door, prize); }
+		else if (monty_type.equals("--evil")) { m = new EvilMonty(n_doors, chosen_door, prize); }
+		else if (monty_type.equals("--angelic")) { m = new AngelicMonty(n_doors, chosen_door, prize); }
+		else if (monty_type.equals("--prepared")) { m = new PreparedMonty(n_doors, chosen_door, prize); }
+		else if (monty_type.equals("--probabilistic")) { m = new ProbabilisticMonty(n_doors, chosen_door, prize); }
+		else if (monty_type.equals("--sandbox")) { m = new SandboxMonty(n_doors, chosen_door, prize, probability); }
+		else throw new IllegalArgumentException("Incorrect Argument or Monty Type");
+		return m;
+	}
+	
+}
+
 
 abstract class Monty {
 	public int n_doors, chosen_door, prize;
@@ -131,7 +154,7 @@ class AngelicMonty extends Monty {
 
 class SandboxMonty extends Monty {
 	private double[][] probability_matrix;
-	SandboxMonty(int n_doors, int chosen_door, int prize) {
+	SandboxMonty(int n_doors, int chosen_door, int prize, double probability) {
 		super(n_doors, chosen_door, prize);
 		probability_matrix = new double[n_doors][n_doors];
 	}
@@ -293,3 +316,4 @@ class ProbabilisticMonty extends Monty{ //this is monty #8 from wikipedia, right
 		return result;
 	}
 }
+
