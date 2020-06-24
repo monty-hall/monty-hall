@@ -182,13 +182,11 @@ class SandboxMonty extends Monty {
 		Random rand = new Random();
 		double temp = rand.nextDouble();
 
-		System.out.println("temp = " + temp);
-
-		for (int i = 1; i < n_doors; ++i) {
+		for (int i = 0; i < n_doors; ++i) {
 			if (i == prize - 1) {
 				continue;
 			}
-			else if (temp < probability_matrix[chosen_door][i]) {
+			else if (temp < probability_matrix[chosen_door - 1][i]) {
 				return i + 1;
 			}
 		}
@@ -196,13 +194,13 @@ class SandboxMonty extends Monty {
 	}
 
 	public void execute() {
-		System.out.println("SANDBOX MODE");
+		System.out.println("\nSANDBOX MODE");
 		System.out.print("Set prize behind door #");
 		Scanner scan = new Scanner(System.in);
-		set_prize(scan.nextInt());
-		System.out.println("Enter an N x N probability matrix:");
+		System.out.println("\nEnter an N x N probability matrix:");
 		load_matrix();
-
+		System.out.println();
+		
 		int open_door = open_door();
 		if (open_door != 0) {
 			System.out.println("Monty opens the door " + open_door);
