@@ -1,11 +1,15 @@
 import React from "react";
 import "./App.css";
+import 'react-vis/dist/style.css'
 import {XYPlot, 
-      LineSeries, 
+      LineSeries,
+      ChartLabel,
+      LineMarkSeries, 
       VerticalGridLines,
       HorizontalGridLines,
       XAxis,
-      YAxis} from 'react-vis';
+      YAxis,
+      Crosshair} from 'react-vis';
 
 const initData = [
   {x: 0, y: 0}
@@ -48,20 +52,18 @@ class Datavis extends React.Component {
   render() {
     const data = this.state.data;
     return (
-      <div className="App">
+      <div className="main1col">
         <XYPlot height={300} width= {300}
           yDomain={[0, 1]}>
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
-          <YAxis />
-          <LineSeries data={data} />
+          <XAxis title="Number of Games Played"/>
+          <YAxis title="Win Percentage"/>
+          <LineSeries
+            data={data}
+            color="#62c6f2"
+          />
         </XYPlot>
-        {/* <form action={() => this.updateData()}>
-          <label for="fname"># runs:</label>
-          <input type="text" id="fname" name="fname" />
-          <input type="submit" value="Run" />
-        </form> */}
         <button onClick={() => this.updateData(1)}>run 1 time</button>
         <button onClick={() => this.updateData(10)}>run 10 times</button>
         <button onClick={() => this.updateData(100)}>run 100 times</button>
