@@ -11,6 +11,13 @@ import MindAnswer from "./mindAnswer.js";
 import Sandbox from "./sandbox.js";
 import Datavis from "./datavis.js";
 
+import {XYPlot, 
+      LineSeries, 
+      VerticalGridLines,
+      HorizontalGridLines,
+      XAxis,
+      YAxis} from 'react-vis';
+
 import "./App.css";
 const axios = require("axios");
 let axiosConfig = {
