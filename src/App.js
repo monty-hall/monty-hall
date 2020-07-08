@@ -1,6 +1,6 @@
 import React from "react";
 import StandardPlay from "./Standard.js";
-import Home from "./Home.js";
+import Home from "./home.js";
 import Result from "./result.js";
 import Answers from "./answers.js";
 import Warning from "./warning.js";
@@ -9,6 +9,14 @@ import HellAnswer from "./hellAnswer.js";
 import AngelicAnswer from "./angelicAnswer.js";
 import MindAnswer from "./mindAnswer.js";
 import Sandbox from "./sandbox.js";
+import Datavis from "./datavis.js";
+
+import {XYPlot, 
+      LineSeries, 
+      VerticalGridLines,
+      HorizontalGridLines,
+      XAxis,
+      YAxis} from 'react-vis';
 
 import "./App.css";
 const axios = require("axios");
@@ -41,6 +49,11 @@ class Menu extends React.Component {
     this.props.updateDisplayCB("Sandbox");
   };
 
+  handleClickDatavis = (e) => {
+    e.preventDefault();
+    this.props.updateDisplayCB("Datavis");
+  }
+
   render() {
     return (
       <div id="menu" ref="menu">
@@ -51,8 +64,8 @@ class Menu extends React.Component {
           onClick={this.handleClickHome}
           alt={"logo"}
         />
-        <a href="#" onClick={this.handleClickHome}>
-          Home
+        <a href="#" onClick={this.handleClickDatavis}>
+          Data Vis
         </a>
         <a href="#" onClick={this.handleClickAnswers}>
           Answers
@@ -366,6 +379,8 @@ class App extends React.Component {
       display = null;
     } else if (this.state.text === "Home") {
       display = <Home />;
+    } else if (this.state.text === "Datavis") {
+      display = <Datavis />
     } else {
       display = <Home />;
     }
