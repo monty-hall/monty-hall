@@ -169,6 +169,17 @@ figcaption {
   border: 3px solid #62c6f2;
 }
 
+.blueButton {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 10px 24px;
+  text-align: center;
+  background-color: #62c6f2;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
 .buttons div {
   margin: 10px;
 }

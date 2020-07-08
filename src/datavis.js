@@ -89,11 +89,11 @@ export default class Datavis extends React.Component {
             className={'test-class-name'}
           />
         </XYPlot>
-        <button onClick={() => this.updateData(1)}>run 1 time</button>
-        <button onClick={() => this.updateData(10)}>run 10 times</button>
-        <button onClick={() => this.updateData(100)}>run 100 times</button>
-        <button onClick={() => this.updateData(1000)}>run 1000 times</button>
-        <p>Current win percentage: {Math.round(data[data.length-1].y*100000)/1000}%</p>
+        <div className="blueButton" onClick={() => this.updateData(1)}>run 1 time</div>
+        <div className="blueButton" onClick={() => this.updateData(10)}>run 10 times</div>
+        <div className="blueButton" onClick={() => this.updateData(100)}>run 100 times</div>
+        <div className="blueButton" onClick={() => this.updateData(1000)}>run 1000 times</div>
+        <h3>Current win percentage: {Math.round(data[data.length-1].y*100000)/1000}%</h3>
       </div>
     );
   }
