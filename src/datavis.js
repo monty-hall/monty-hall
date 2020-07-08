@@ -2,36 +2,55 @@ import React from "react";
 import "./App.css";
 import 'react-vis/dist/style.css'
 import {XYPlot, 
-      LineSeries,
-      ChartLabel,
-      LineMarkSeries, 
+      LineSeries, 
       VerticalGridLines,
       HorizontalGridLines,
       XAxis,
       YAxis,
       Crosshair} from 'react-vis';
 
-const initData = [
+const initData = [[
   {x: 0, y: 0}
-];
+]];
 
 let num_games = 1;
 let num_wins = 0;
 
 function generateData() {
-  return initData;
+  return initData[0];
 }
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-class Datavis extends React.Component {
+export default class Datavis extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {data: generateData()};
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: generateData(),
+      crosshairValues: []
+    };
   }
+
+  /**
+   * Event handler for onMouseLeave.
+   * @private
+   */
+  _onMouseLeave = () => {
+    this.setState({crosshairValues: []});
+  };
+
+  /**
+   * Event handler for onNearestX.
+   * @param {Object} value Selected value.
+   * @param {index} index Index of the value in the data array.
+   * @private
+   */
+  _onNearestX = (value, {index}) => {
+    this.setState({crosshairValues: initData.map(d => d[index])});
+  };
 
   async updateData(plays) {
     var i;
@@ -41,9 +60,9 @@ class Datavis extends React.Component {
         num_wins++;
       }
       const point = {x: num_games, y: num_wins/num_games};
-      initData.push(point);
+      initData[0].push(point);
       num_games++;
-      this.setState({data: initData});
+      this.setState({data: initData[0]});
       var sleepTime = 1/plays;
       await sleep(sleepTime);
     }
@@ -53,24 +72,29 @@ class Datavis extends React.Component {
     const data = this.state.data;
     return (
       <div className="main1col">
-        <XYPlot height={300} width= {300}
-          yDomain={[0, 1]}>
+        <XYPlot height={400} width= {600}
+          yDomain={[0, 1]}
+          onMouseLeave={this._onMouseLeave}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis title="Number of Games Played"/>
           <YAxis title="Win Percentage"/>
           <LineSeries
+            onNearestX={this._onNearestX}
             data={data}
-            color="#62c6f2"
+            color="#d6001c"
+          />
+          <Crosshair
+            values={this.state.crosshairValues}
+            className={'test-class-name'}
           />
         </XYPlot>
         <button onClick={() => this.updateData(1)}>run 1 time</button>
         <button onClick={() => this.updateData(10)}>run 10 times</button>
         <button onClick={() => this.updateData(100)}>run 100 times</button>
         <button onClick={() => this.updateData(1000)}>run 1000 times</button>
+        <p>Current win percentage: {Math.round(data[data.length-1].y*100000)/1000}%</p>
       </div>
     );
   }
 }
-
-export default Datavis;
