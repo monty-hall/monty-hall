@@ -26,6 +26,8 @@ class MontyFactory{
 }
 
 
+import java.util.*;
+
 abstract class Monty {
 	public int n_doors, chosen_door, prize;
 
@@ -33,30 +35,71 @@ abstract class Monty {
 		this.n_doors = n_doors;
 		this.chosen_door = chosen_door;
 		this.prize = prize;
-		// if(chosen_door<1 || chosen_door > n_doors)
-		// {
-		// 	System.out.println("Your have chosen an invalid door");
-		// 	//do something else here!
-		// 	System.exit(1);
-		// }
 	}
 
 	public boolean check_win() {
 		return chosen_door == prize;
 	}
 
-	public void switch_door(int d) {
-		chosen_door = d;
-	}
-
 	public boolean check_door(int door) {
 		return door == prize;
 	}
 
+	/* MONTY REACTIONS */
+
+	/* Standard: Monty picks and opens one of the other empty doors with equal likelihood. */
+	public int open_empty_door() {
+		int result = 0;
+		while (result == 0 || result == chosen_door || result == prize) {
+			Random rand = new Random();
+    		result = rand.nextInt(n_doors) + 1;
+		}
+		return result;
+	}
+
+	/* Too Bad!/Generous: Monty opens the very door you picked and reveals you win/did not win the prize. */
+	public int open_chosen_door() {
+		return chosen_door;
+	}
+
+	/* In your Face!: Monty opens the door with the prize. */
+	public int open_prize_door() {
+		return prize;
+	}
+
+	/* Secretive: Monty does not open any door at all. */ 
+	public int not_open_door() {
+		return 0;
+	}
+
+	/* Lazy: Monty opens the closest (lowest number) empty door. */
+	public int open_closest_door() {
+		for (int i = 1; i <= n_doors; ++i) {
+			if (i != chosen_door && i != prize)
+				return i;
+		}
+		return 0;
+	}
+
+	/* Healthy: Monty opens the empty door furthest away. */
+	public int open_furthest_door() {
+		for (int i = n_doors; i > 0; --i) {
+			if (i != chosen_door && i != prize)
+				return i;
+		}
+		return 0;
+	}
+
+	public int open_random_door() {
+		Random rand = new Random();
+		return rand.nextInt(n_doors) + 1;
+	}
+
+	public void switch_door(int d) {
+		chosen_door = d;
+	}
+
 	public void execute() {
-		// System.out.println("What door do you pick?");
-		// Scanner door = new Scanner(System.in);
-		// chosen_door = Integer.parseInt(door.next());
 		int open_door = open_door();
 		if (open_door != 0) {
 			System.out.println("Monty opens the door " + open_door);
@@ -91,14 +134,18 @@ abstract class Monty {
 			}
 		}
 
-		if (check_win()) { System.out.println("WIN"); }
-		else { System.out.println("LOSE");}
+		if (check_win()) { 
+			System.out.println("WIN"); 
+		}
+		else { 
+			System.out.println("LOSE");
+		}
+
 		System.out.println("Prize was behind the door " + prize);
 	}
 
 	abstract public int open_door();
 }
-
 
 class RegularMonty extends Monty {
 
@@ -107,54 +154,55 @@ class RegularMonty extends Monty {
 	}
 
 	public int open_door() {
-		int result = 0;
-		while (result == 0 || result == chosen_door || result == prize) {
-			Random rand = new Random();
-    		result = rand.nextInt(n_doors) + 1;
-		}
-		return result;
+		return open_empty_door();
 	}
 }
 
-
 class EvilMonty extends Monty {
+
 	EvilMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
 
 	public int open_door() {
-		int result = 0;
-		if (chosen_door == prize) {
-			while (result == 0 || result == chosen_door || result == prize) {
-				Random rand = new Random();
-	    		result = rand.nextInt(n_doors) + 1;
-			}
-		}
-		return result;
+		if (check_win())
+			return open_empty_door();
+		else 
+			return open_prize_door();
 	}
 }
 
+class LessEvilMonty extends EvilMonty {
+
+	LessEvilMonty(int n_doors, int chosen_door, int prize) {
+		super(n_doors, chosen_door, prize);
+	}
+
+	public int open_door() {
+		if (check_win())
+			return open_empty_door();
+		else
+			return open_chosen_door();
+	}
+}
 
 class AngelicMonty extends Monty {
+
 	AngelicMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
 
 	public int open_door() {
-		int result = 0;
-		if (chosen_door != prize) {
-			while (result == 0 || result == chosen_door || result == prize) {
-				Random rand = new Random();
-	    		result = rand.nextInt(n_doors) + 1;
-			}
-		}
-		return result;
+		if (check_win())
+			return open_chosen_door();
+		else 
+			return open_empty_door();
 	}
 }
 
 class SandboxMonty extends Monty {
 	private double[][] probability_matrix;
-	SandboxMonty(int n_doors, int chosen_door, int prize, double probability) {
+	SandboxMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 		probability_matrix = new double[n_doors][n_doors];
 	}
@@ -220,10 +268,10 @@ class SandboxMonty extends Monty {
 		System.out.println("\nSANDBOX MODE");
 		System.out.print("Set prize behind door #");
 		Scanner scan = new Scanner(System.in);
+		set_prize(scan.nextInt());
 		System.out.println("\nEnter an N x N probability matrix:");
 		load_matrix();
 		System.out.println();
-		
 		int open_door = open_door();
 		if (open_door != 0) {
 			System.out.println("Monty opens the door " + open_door);
