@@ -18,7 +18,7 @@ class MontyFactory{
 		else if (monty_type.equals("--angelic")) { m = new AngelicMonty(n_doors, chosen_door, prize); }
 		else if (monty_type.equals("--prepared")) { m = new PreparedMonty(n_doors, chosen_door, prize); }
 		else if (monty_type.equals("--probabilistic")) { m = new ProbabilisticMonty(n_doors, chosen_door, prize); }
-		else if (monty_type.equals("--sandbox")) { m = new SandboxMonty(n_doors, chosen_door, prize, probability); }
+		else if (monty_type.equals("--sandbox")) { m = new SandboxMonty(n_doors, chosen_door, prize); }
 		else throw new IllegalArgumentException("Incorrect Argument or Monty Type");
 		return m;
 	}
