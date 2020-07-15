@@ -26,8 +26,6 @@ class MontyFactory{
 }
 
 
-import java.util.*;
-
 abstract class Monty {
 	public int n_doors, chosen_door, prize;
 
