@@ -52,6 +52,10 @@ export default class Datavis extends React.Component {
     this.setState({crosshairValues: initData.map(d => d[index])});
   };
 
+  setDoor = (e) => {
+
+  }
+
   async updateData(plays) {
     var i;
     for (i = 0; i < plays; i++) {
@@ -89,6 +93,11 @@ export default class Datavis extends React.Component {
             className={'test-class-name'}
           />
         </XYPlot>
+        <div onChange={this.setDoor.bind(this)}>
+          <input type="radio" value="1" name="door"/> Door 1
+          <input type="radio" value="2" name="door"/> Door 2
+          <input type="radio" value="3" name="door"/> Door 3
+        </div> 
         <div className="blueButton" onClick={() => this.updateData(1)}>run 1 time</div>
         <div className="blueButton" onClick={() => this.updateData(10)}>run 10 times</div>
         <div className="blueButton" onClick={() => this.updateData(100)}>run 100 times</div>
