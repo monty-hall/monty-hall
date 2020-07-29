@@ -73,6 +73,7 @@ export default class Datavis extends React.Component {
   };
 
   setDoor = (e) => {
+<<<<<<< HEAD
     this.setState({setDoor: e.target.value, selectedDoor: e.target.value, montyDoor: getMontyDoor(e.target.value,this.state.carDoor)});
   }
 
@@ -147,6 +148,17 @@ export default class Datavis extends React.Component {
         this.setState({stepState: 0});
         this.setState({numSteps: this.state.numSteps-1});
         this.updateSelectedDoor(-1); // no door selected
+=======
+
+  }
+
+  async updateData(plays) {
+    var i;
+    for (i = 0; i < plays; i++) {
+      const win = Math.floor(Math.random() * 3);
+      if (win > 0) {
+        num_wins++;
+>>>>>>> fcd036668a66db3f97011d0e8458fb75d9fb8bfa
       }
     }
   } 
@@ -242,6 +254,7 @@ export default class Datavis extends React.Component {
             className={'test-class-name'}
           />
         </XYPlot>
+<<<<<<< HEAD
         <div>
           {door_items}
         </div>
@@ -263,6 +276,13 @@ export default class Datavis extends React.Component {
           Step Through Games?&nbsp;&nbsp;
           <div className="navyButton" onClick={() => this.takeStep()}>Step</div>
         </div>
+=======
+        <div onChange={this.setDoor.bind(this)}>
+          <input type="radio" value="1" name="door"/> Door 1
+          <input type="radio" value="2" name="door"/> Door 2
+          <input type="radio" value="3" name="door"/> Door 3
+        </div> 
+>>>>>>> fcd036668a66db3f97011d0e8458fb75d9fb8bfa
         <div className="blueButton" onClick={() => this.updateData(1)}>run 1 time</div>
         <div className="blueButton" onClick={() => this.updateData(10)}>run 10 times</div>
         <div className="blueButton" onClick={() => this.updateData(100)}>run 100 times</div>
