@@ -180,6 +180,18 @@ figcaption {
   font-family: "Helvetica", cursive, sans-serif;
 }
 
+.navyButton {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 6px 16px;
+  text-align: center;
+  background-color: #00205b;
+  color: #eeeeee;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Helvetica", cursive, sans-serif;
+}
+
 .buttons div {
   margin: 10px;
 }
