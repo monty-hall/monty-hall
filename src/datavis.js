@@ -73,7 +73,6 @@ export default class Datavis extends React.Component {
   };
 
   setDoor = (e) => {
-<<<<<<< HEAD
     this.setState({setDoor: e.target.value, selectedDoor: e.target.value, montyDoor: getMontyDoor(e.target.value,this.state.carDoor)});
   }
 
@@ -148,25 +147,14 @@ export default class Datavis extends React.Component {
         this.setState({stepState: 0});
         this.setState({numSteps: this.state.numSteps-1});
         this.updateSelectedDoor(-1); // no door selected
-=======
-
-  }
-
-  async updateData(plays) {
-    var i;
-    for (i = 0; i < plays; i++) {
-      const win = Math.floor(Math.random() * 3);
-      if (win > 0) {
-        num_wins++;
->>>>>>> fcd036668a66db3f97011d0e8458fb75d9fb8bfa
       }
     }
   } 
 
   async updateData(plays) {
-    if (this.state.step) {
-      this.setState({numSteps: this.state.numSteps+plays})
-    } else {
+    this.setState({numSteps: this.state.numSteps+plays});
+    // only enter if step checkbox isn't checked
+    if (!this.state.step) {
       var i;
       var sleepTime = 1/plays;
       for (i = 0; i < plays; i++) {
@@ -210,6 +198,7 @@ export default class Datavis extends React.Component {
         this.updateMontyDoor(getMontyDoor(this.state.setDoor,newCarDoor));
         this.updateCarDoor(newCarDoor);
         this.updateOpenDoors([false,false,false]);
+        this.setState({numSteps: this.state.numSteps-1});
         // this.setState({selectedDoor: this.state.setDoor, carDoor: newCarDoor, montyDoor: getMontyDoor(this.state.setDoor,newCarDoor),
         //  openDoors: [false,false,false]});
       }
@@ -254,7 +243,6 @@ export default class Datavis extends React.Component {
             className={'test-class-name'}
           />
         </XYPlot>
-<<<<<<< HEAD
         <div>
           {door_items}
         </div>
@@ -276,17 +264,11 @@ export default class Datavis extends React.Component {
           Step Through Games?&nbsp;&nbsp;
           <div className="navyButton" onClick={() => this.takeStep()}>Step</div>
         </div>
-=======
-        <div onChange={this.setDoor.bind(this)}>
-          <input type="radio" value="1" name="door"/> Door 1
-          <input type="radio" value="2" name="door"/> Door 2
-          <input type="radio" value="3" name="door"/> Door 3
-        </div> 
->>>>>>> fcd036668a66db3f97011d0e8458fb75d9fb8bfa
         <div className="blueButton" onClick={() => this.updateData(1)}>run 1 time</div>
         <div className="blueButton" onClick={() => this.updateData(10)}>run 10 times</div>
         <div className="blueButton" onClick={() => this.updateData(100)}>run 100 times</div>
         <div className="blueButton" onClick={() => this.updateData(1000)}>run 1000 times</div>
+        <h3>Games left: {this.state.numSteps}</h3>
         <h3>Current win percentage: {Math.round(data[data.length-1].y*100000)/1000}%</h3>
       </div>
     );
