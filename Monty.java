@@ -1,5 +1,6 @@
-//package monty;
+package monty;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ import java.util.Scanner;
 //Now, we only ask for a new door number(which may be the same) instead of asking to switch (Y/N etc).
 //So, adjust your user input accordingly.
 abstract class Monty {
-
+	
 	protected int n_doors, chosen_door, prize;
 	
 	//Vector of probabilities for Monty to choose
@@ -56,9 +57,13 @@ abstract class Monty {
 		else
 			generateLoseVec();
 	}
-
-	public void execute() 
+	
+	//return true if win, else if lose
+	//mostly to simplify testing, but also may be useful
+	//in the future 
+	public boolean execute() 
 	{
+		boolean result;
 		generateVec();
 		int open_door = openDoor();
 		if (open_door != 0) 
@@ -67,7 +72,7 @@ abstract class Monty {
 			if(check_door(open_door)) {
 				System.out.println(open_door + " is a car.");
 				System.out.println("LOSE");
-				return;
+				return false;
 			}
 			else {
 				System.out.println(open_door + " is not a car.");
@@ -76,7 +81,19 @@ abstract class Monty {
 			System.out.println("Monty offers you to switch a door. Switch to any new door or stay with your old choice. Your new door = ");
 			Scanner scan = new Scanner(System.in);
 			int temp = scan.nextInt();
+			while(temp == open_door)
+			{
+				System.out.println("This door is already open, choose some other door. Your new door = ");
+				temp = scan.nextInt();
+			}
+			try {
+				System.in.read(new byte[System.in.available()]);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			assert temp <= n_doors;
+			if(temp == open_door)
 			if(temp < 1 || temp > n_doors)
 			{
 				System.out.println("Your have chosen an invalid door");
@@ -92,9 +109,10 @@ abstract class Monty {
 		
 		//We also probably need to rethink criteria for winning/losing
 		//Consider devious Monty, etc.
-		if (check_win()) { System.out.println("WIN"); }
-		else { System.out.println("LOSE");}
+		if (check_win()) { System.out.println("WIN"); result=true; }
+		else { System.out.println("LOSE");result=false; }
 		System.out.println("Prize was behind the door " + prize);
+		return result;
 	}
 	
 	
