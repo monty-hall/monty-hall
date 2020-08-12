@@ -109,6 +109,7 @@ export default class Datavis extends React.Component {
     this.setState({step: !this.state.step});
   }
 
+  // FOR SERVER
   takeStep = (e) => {
     if (this.state.numSteps > 0) {  // make sure there are more games remaining to be played
       if (this.state.stepState == 0) {
@@ -118,6 +119,13 @@ export default class Datavis extends React.Component {
         var trueDoorNum = Number(this.state.setDoor)+1; // add 1 bc zero-indexing
         this.setState({stepState: 1, 
           message: `You picked Door ${trueDoorNum}.`});
+        /* example JSON output to server
+        {
+          "mode": "standard",
+          "ndoors": 3,
+          "door_1": trueDoorNum
+        }
+        */
       } else if (this.state.stepState == 1) {
         // door selected -> Monty reveals door
         var newMontyDoor = getMontyDoor(this.state.setDoor, this.state.carDoor);
@@ -125,15 +133,31 @@ export default class Datavis extends React.Component {
         this.state.openDoors[newMontyDoor] = true;
         this.setState({stepState: 2,
           message: `Monty opened Door ${Number(newMontyDoor)+1}.`});
+        /* receive JSON from server
+          this.updateMontyDoor(<monty's door from JSON>)
+        */
       } else if (this.state.stepState == 2) {
         // Monty opened door -> offer switch
+        /* receive JSON from server about switching options
+          this.setState({switch: <JSON data>})
+        */
         if (this.state.switch) {
           var newDoor = 3-this.state.montyDoor-this.state.selectedDoor;
           this.switchDoor(this.state.montyDoor, this.state.selectedDoor);
           this.updateSelectedDoor(newDoor);
           this.setState({message: `You switched to Door ${Number(newDoor)+1}.`})
+          /* send JSON object to server about 2nd choice
+            {
+              "door_2": newDoor+1
+            }
+          */
         } else {
           this.setState({message: `You stayed with Door ${Number(this.state.setDoor)+1}.`})
+          /* send JSON object to notify about staying
+            {
+              "door_2": this.state.setDoor+1
+            }
+          */
         }
         this.setState({stepState: 3});
       } else if (this.state.stepState == 3) {
@@ -146,6 +170,9 @@ export default class Datavis extends React.Component {
         } else {
           this.setState({message: "You lost!"})
         }
+        /* Receive JSON from server about win/loss
+          this.setState({<JSON win/loss info>})
+        */
         const point = {x: num_games, y: num_wins/num_games};
         initData[0].push(point);
         num_games++;
