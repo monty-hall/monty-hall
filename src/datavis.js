@@ -48,6 +48,7 @@ export default class Datavis extends React.Component {
       selectedDoor: 0,
       montyDoor: 1,
       openDoors: [false,false,false],
+      numDoors: 3,
       step: false,  // for step checkbox
       numSteps: 0,  // for actual stepping
       stepState: 0, // state of current game (0-4)
@@ -85,7 +86,7 @@ export default class Datavis extends React.Component {
   switchDoor(montyDoor, selectedDoor) {
     this.setState({
       montyDoor: montyDoor,
-      selectedDoor: 3-montyDoor-selectedDoor
+      selectedDoor: this.state.numDoors-montyDoor-selectedDoor
     })
   }
 
@@ -109,12 +110,22 @@ export default class Datavis extends React.Component {
     this.setState({step: !this.state.step});
   }
 
+  handleNumDoorsInput = (e) => {
+    this.setState({numDoors: e.target.value});
+    // update all doors to appear as closed
+    const newOpenDoors = []
+    for (var i = 0; i < e.target.value; i++) {
+      newOpenDoors.push(false);
+    }
+    this.setState({openDoors: newOpenDoors});
+  }
+
   // FOR SERVER
   takeStep = (e) => {
     if (this.state.numSteps > 0) {  // make sure there are more games remaining to be played
       if (this.state.stepState == 0) {
         // door not chosen yet -> show selected door
-        this.updateCarDoor(Math.floor(Math.random()*3));
+        this.updateCarDoor(Math.floor(Math.random()*this.state.numDoors));
         this.updateSelectedDoor(this.state.setDoor);
         var trueDoorNum = Number(this.state.setDoor)+1; // add 1 bc zero-indexing
         this.setState({stepState: 1, 
@@ -122,7 +133,7 @@ export default class Datavis extends React.Component {
         /* example JSON output to server
         {
           "mode": "standard",
-          "ndoors": 3,
+          "ndoors": this.state.numDoors,
           "door_1": trueDoorNum
         }
         */
@@ -142,7 +153,7 @@ export default class Datavis extends React.Component {
           this.setState({switch: <JSON data>})
         */
         if (this.state.switch) {
-          var newDoor = 3-this.state.montyDoor-this.state.selectedDoor;
+          var newDoor = this.state.numDoors-this.state.montyDoor-this.state.selectedDoor;
           this.switchDoor(this.state.montyDoor, this.state.selectedDoor);
           this.updateSelectedDoor(newDoor);
           this.setState({message: `You switched to Door ${Number(newDoor)+1}.`})
@@ -162,7 +173,11 @@ export default class Datavis extends React.Component {
         this.setState({stepState: 3});
       } else if (this.state.stepState == 3) {
         // Switch was offered -> reveal doors
-        this.updateOpenDoors([true,true,true]);
+        const newOpenDoors = [];
+        for (var i = 0; i < this.state.numDoors; i++) {
+          newOpenDoors.push(true);
+        }
+        this.updateOpenDoors(newOpenDoors);
         var win = Boolean(this.state.selectedDoor == this.state.carDoor);
         if (win) {
           num_wins++;
@@ -180,7 +195,11 @@ export default class Datavis extends React.Component {
         this.setState({stepState: 4});
       } else if (this.state.stepState == 4) {
         // Doors were revealed -> reset game
-        this.updateOpenDoors([false,false,false]);
+        const newOpenDoors = [];
+        for (var i = 0; i < this.state.numDoors; i++) {
+          newOpenDoors.push(false);
+        }
+        this.updateOpenDoors(newOpenDoors);
         this.setState({stepState: 0});
         this.setState({numSteps: this.state.numSteps-1});
         this.updateSelectedDoor(-1); // no door selected
@@ -217,8 +236,11 @@ export default class Datavis extends React.Component {
         // console.log(`selected door: ${this.state.selectedDoor}`);
         // console.log(`car door: ${this.state.carDoor}`);
         // open all doors
-        // this.setState({openDoors: [true,true,true]});
-        this.updateOpenDoors([true,true,true]);
+        var newOpenDoors = [];
+        for (var j = 0; j < this.state.numDoors; j++) {
+          newOpenDoors.push(true);
+        }
+        this.updateOpenDoors(newOpenDoors);
         await sleep(sleepTime);
         var win = Boolean(this.state.selectedDoor == this.state.carDoor);
         if (win) {
@@ -231,11 +253,15 @@ export default class Datavis extends React.Component {
         // var sleepTime = 1/plays;
         // await sleep(sleepTime);
         // reset doors
-        var newCarDoor = Math.floor(Math.random()*3);
+        var newCarDoor = Math.floor(Math.random()*this.state.numDoors);
         this.updateSelectedDoor(this.state.setDoor);
         this.updateMontyDoor(getMontyDoor(this.state.setDoor,newCarDoor));
         this.updateCarDoor(newCarDoor);
-        this.updateOpenDoors([false,false,false]);
+        newOpenDoors = [];
+        for (var j = 0; j < this.state.numDoors; j++) {
+          newOpenDoors.push(false);
+        }
+        this.updateOpenDoors(newOpenDoors);
         this.setState({numSteps: this.state.numSteps-1});
         // this.setState({selectedDoor: this.state.setDoor, carDoor: newCarDoor, montyDoor: getMontyDoor(this.state.setDoor,newCarDoor),
         //  openDoors: [false,false,false]});
@@ -245,8 +271,10 @@ export default class Datavis extends React.Component {
 
   render() {
     const data = this.state.data;
+
+    // for door images
     const door_items = [];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < this.state.numDoors; i++) {
       if (this.state.openDoors[i] && this.state.carDoor == i) {
         // open car door
         door_items.push(<img src="../img/door_open_car.png" className="open-door" id={i} />)
@@ -260,6 +288,13 @@ export default class Datavis extends React.Component {
         // default closed door
         door_items.push(<img src="../img/closed-door.png" className="door" id={i} />)
       }
+    }
+
+    // for door radio buttons
+    const door_buttons = [];
+    for (var i = 0; i < this.state.numDoors; i++) {
+      door_buttons.push(<input type="radio" value={i} name="door"/>);
+      door_buttons.push("Door " + Number(i+1));
     }
 
     return (
@@ -286,10 +321,14 @@ export default class Datavis extends React.Component {
         </div>
         <p>{this.state.message}</p>
         <div onChange={this.setDoor.bind(this)}>
-          <input type="radio" value="0" name="door"/> Door 1
-          <input type="radio" value="1" name="door"/> Door 2
-          <input type="radio" value="2" name="door"/> Door 3
-        </div> 
+          {door_buttons}
+        </div>
+        <form>
+          <label>
+            Number of Doors:&nbsp;
+            <input type="text" value={this.state.numDoors} onChange={this.handleNumDoorsInput} /> 
+          </label>
+        </form>
         <div>
           <input 
             type="checkbox" 
