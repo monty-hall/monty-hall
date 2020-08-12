@@ -13,7 +13,7 @@ import java.util.Scanner;
 //So, adjust your user input accordingly.
 abstract class Monty {
 	
-	protected int n_doors, chosen_door, prize;
+	protected int n_doors, chosen_door, prize, open_door;
 	
 	//Vector of probabilities for Monty to choose
 	//any door (note: door 0 is reserved for technical things
@@ -27,7 +27,16 @@ abstract class Monty {
 		this.prize = prize;
 		ProbVec = new double[n_doors+1];
 	}
-	protected boolean check_win() 
+	
+	Monty(int n_doors,int chosen_door)
+	{
+		this.n_doors = n_doors;
+		this.chosen_door = chosen_door;
+		Random rand = new Random(System.currentTimeMillis());
+		this.prize = rand.nextInt(n_doors) + 1;
+		ProbVec = new double[n_doors+1];
+	}
+	public boolean check_win() 
 	{
 			return chosen_door == prize;
 	}
@@ -40,6 +49,19 @@ abstract class Monty {
 	protected boolean check_door(int door) 
 	{
 			return door == prize;
+	}
+	public int get_chosen_door()
+	{
+		return chosen_door;
+	}
+	
+	public int get_open_door()
+	{
+		return open_door;
+	}
+	public int get_prize()
+	{
+		return prize;
 	}
 	
 	
@@ -57,7 +79,26 @@ abstract class Monty {
 		else
 			generateLoseVec();
 	}
-	
+	//returns true if game continues after start, false
+	//if game ends (you should not call finishGame() in this case)
+	public boolean startGame()
+	{
+		generateVec();
+		open_door = openDoor();
+		if(check_door(open_door)) {
+			return false;
+		}
+		return true;
+	}
+	public void finishGame(int new_choice)
+	{
+		if(new_choice < 1 || new_choice > this.n_doors)
+		{
+			System.out.println("Your have chosen an invalid door");
+			System.exit(1);
+		}
+		switch_door(new_choice);
+	}
 	//return true if win, else if lose
 	//mostly to simplify testing, but also may be useful
 	//in the future 
@@ -65,7 +106,7 @@ abstract class Monty {
 	{
 		boolean result;
 		generateVec();
-		int open_door = openDoor();
+		open_door = openDoor();
 		if (open_door != 0) 
 		{
 			System.out.println("Monty opens the door " + open_door);
@@ -188,6 +229,9 @@ class StandardMonty extends Monty {
 	StandardMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	StandardMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 	
 	//For standard Monty, if player chooses a correct(winning) door, 
 	//We fill the vector with probabilities 1/(n_doors-1)
@@ -232,6 +276,10 @@ class InYourFaceStandardMonty extends StandardMonty {
 	InYourFaceStandardMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceStandardMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
+
 
 	protected void generateLoseVec() {
 		openPrizeDoor();
@@ -241,6 +289,9 @@ class InYourFaceStandardMonty extends StandardMonty {
 class TooBadStandardMonty extends StandardMonty {
 	TooBadStandardMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	TooBadStandardMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -265,6 +316,9 @@ class DeviousMonty extends Monty {
 	DeviousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	DeviousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		standardWin();
@@ -280,6 +334,9 @@ class TrickyDeviousMonty extends DeviousMonty {
 	TrickyDeviousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	TrickyDeviousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		notOpenDoor();
@@ -290,6 +347,9 @@ class TooBadDeviousMonty extends DeviousMonty {
 
 	TooBadDeviousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	TooBadDeviousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -302,6 +362,9 @@ class InYourFaceDeviousMonty extends DeviousMonty {
 	InYourFaceDeviousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceDeviousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openPrizeDoor();
@@ -312,6 +375,9 @@ class GeneralDeviousMonty extends DeviousMonty {
 
 	GeneralDeviousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	GeneralDeviousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -334,6 +400,10 @@ class EvilMonty extends Monty {
 	EvilMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	EvilMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
+
 
 	protected void generateWinVec() {
 		notOpenDoor();
@@ -349,6 +419,9 @@ class TooBadEvilMonty extends EvilMonty {
 	TooBadEvilMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	TooBadEvilMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openChosenDoor();
@@ -360,6 +433,10 @@ class InYourFaceEvilMonty extends EvilMonty {
 	InYourFaceEvilMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceEvilMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
+
 
 	protected void generateLoseVec() {
 		openPrizeDoor();
@@ -372,6 +449,9 @@ class EquilibriumMonty extends Monty {
 
 	EquilibriumMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	EquilibriumMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateWinVec() {
@@ -388,6 +468,9 @@ class TrickyEquilibriumMonty extends EquilibriumMonty {
 	TrickyEquilibriumMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	TrickyEquilibriumMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		Random rand = new Random();
@@ -402,6 +485,9 @@ class TooBadEquilibriumMonty extends EquilibriumMonty {
 
 	TooBadEquilibriumMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	TooBadEquilibriumMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -418,6 +504,9 @@ class InYourFaceEquilibriumMonty extends EquilibriumMonty {
 	InYourFaceEquilibriumMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceEquilibriumMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		Random rand = new Random();
@@ -432,6 +521,9 @@ class GeneralEquilibriumMonty extends EquilibriumMonty {
 
 	GeneralEquilibriumMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	GeneralEquilibriumMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -458,6 +550,9 @@ class GeneralGenerousMonty extends Monty {
 	GeneralGenerousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	GeneralGenerousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		openPrizeDoor();
@@ -473,6 +568,9 @@ class InYourFaceGenerousMonty extends GeneralGenerousMonty {
 	InYourFaceGenerousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceGenerousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openPrizeDoor();
@@ -484,6 +582,9 @@ class TooBadGenerousMonty extends GeneralGenerousMonty {
 	TooBadGenerousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	TooBadGenerousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openChosenDoor();
@@ -494,6 +595,9 @@ class TrickyGenerousMonty extends GeneralGenerousMonty {
 
 	TrickyGenerousMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	TrickyGenerousMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -507,6 +611,9 @@ class GeneralSecretiveMonty extends Monty {
 
 	GeneralSecretiveMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	GeneralSecretiveMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateWinVec() {
@@ -523,6 +630,9 @@ class InYourFaceSecretiveMonty extends GeneralSecretiveMonty {
 	InYourFaceSecretiveMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	InYourFaceSecretiveMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openPrizeDoor();
@@ -534,6 +644,9 @@ class TooBadSecretiveMonty extends GeneralSecretiveMonty {
 	TooBadSecretiveMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	TooBadSecretiveMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateLoseVec() {
 		openChosenDoor();
@@ -544,6 +657,9 @@ class TrickySecretiveMonty extends GeneralSecretiveMonty {
 
 	TrickySecretiveMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	TrickySecretiveMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateLoseVec() {
@@ -557,6 +673,9 @@ class IndifferentMonty extends Monty {
 
 	IndifferentMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	IndifferentMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateWinVec() {
@@ -581,6 +700,9 @@ class IgnorantMonty extends Monty {
 	IgnorantMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	IgnorantMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		standardWin();
@@ -595,6 +717,9 @@ class LazyMonty extends Monty {
 
 	LazyMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	LazyMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateWinVec() {
@@ -629,6 +754,9 @@ class SuperLazyMonty extends Monty {
 	SuperLazyMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	SuperLazyMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		for(int i = 0; i <= n_doors; ++i) {
@@ -649,6 +777,9 @@ class HealthyMonty extends Monty {
 
 	HealthyMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	HealthyMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	protected void generateWinVec() {
@@ -683,6 +814,10 @@ class SuperHealthyMonty extends Monty {
 	SuperHealthyMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	SuperHealthyMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
+
 
 	protected void generateWinVec() {
 		for(int i = 0; i <= n_doors; ++i) {
@@ -704,6 +839,9 @@ class RandomMonty extends Monty {
 	RandomMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	RandomMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		ProbVec[0] = 0;
@@ -724,6 +862,9 @@ class StrictlyPreferentialMonty extends Monty {
 
 	StrictlyPreferentialMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
+	}
+	StrictlyPreferentialMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
 	}
 
 	int[] rank_order = new int[n_doors];
@@ -765,6 +906,9 @@ class SuperStrictlyPreferentialMonty extends StrictlyPreferentialMonty {
 	SuperStrictlyPreferentialMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	SuperStrictlyPreferentialMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
 
 	protected void generateWinVec() {
 		for(int i = 0; i <= n_doors; ++i) {
@@ -785,6 +929,10 @@ class PreferentialMonty extends Monty {
 	PreferentialMonty(int n_doors, int chosen_door, int prize) {
 		super(n_doors, chosen_door, prize);
 	}
+	PreferentialMonty(int n_doors, int chosen_door) {
+		super(n_doors, chosen_door);
+	}
+
 
 	protected void generateWinVec() {
 		Scanner scan = new Scanner(System.in);
