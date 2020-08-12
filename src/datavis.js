@@ -50,7 +50,8 @@ export default class Datavis extends React.Component {
       openDoors: [false,false,false],
       step: false,  // for step checkbox
       numSteps: 0,  // for actual stepping
-      stepState: 0  // state of current game (0-4)
+      stepState: 0, // state of current game (0-4)
+      message: "Choose a door!"
     };
   }
 
@@ -114,19 +115,25 @@ export default class Datavis extends React.Component {
         // door not chosen yet -> show selected door
         this.updateCarDoor(Math.floor(Math.random()*3));
         this.updateSelectedDoor(this.state.setDoor);
-        this.setState({stepState: 1});
+        var trueDoorNum = Number(this.state.setDoor)+1; // add 1 bc zero-indexing
+        this.setState({stepState: 1, 
+          message: `You picked Door ${trueDoorNum}.`});
       } else if (this.state.stepState == 1) {
         // door selected -> Monty reveals door
         var newMontyDoor = getMontyDoor(this.state.setDoor, this.state.carDoor);
         this.updateMontyDoor(newMontyDoor);
         this.state.openDoors[newMontyDoor] = true;
-        this.setState({stepState: 2});
+        this.setState({stepState: 2,
+          message: `Monty opened Door ${Number(newMontyDoor)+1}.`});
       } else if (this.state.stepState == 2) {
         // Monty opened door -> offer switch
         if (this.state.switch) {
           var newDoor = 3-this.state.montyDoor-this.state.selectedDoor;
           this.switchDoor(this.state.montyDoor, this.state.selectedDoor);
           this.updateSelectedDoor(newDoor);
+          this.setState({message: `You switched to Door ${Number(newDoor)+1}.`})
+        } else {
+          this.setState({message: `You stayed with Door ${Number(this.state.setDoor)+1}.`})
         }
         this.setState({stepState: 3});
       } else if (this.state.stepState == 3) {
@@ -135,6 +142,9 @@ export default class Datavis extends React.Component {
         var win = Boolean(this.state.selectedDoor == this.state.carDoor);
         if (win) {
           num_wins++;
+          this.setState({message: "You won!"})
+        } else {
+          this.setState({message: "You lost!"})
         }
         const point = {x: num_games, y: num_wins/num_games};
         initData[0].push(point);
@@ -147,6 +157,7 @@ export default class Datavis extends React.Component {
         this.setState({stepState: 0});
         this.setState({numSteps: this.state.numSteps-1});
         this.updateSelectedDoor(-1); // no door selected
+        this.setState({message: "Game over.  Play again?"})
       }
     }
   } 
@@ -246,6 +257,7 @@ export default class Datavis extends React.Component {
         <div>
           {door_items}
         </div>
+        <p>{this.state.message}</p>
         <div onChange={this.setDoor.bind(this)}>
           <input type="radio" value="0" name="door"/> Door 1
           <input type="radio" value="1" name="door"/> Door 2
