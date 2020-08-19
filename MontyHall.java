@@ -43,6 +43,7 @@ public class MontyHall {
     // Behavioral Blueprint
     public int[] startGame(String winning_mode, String losing_mode, int n_doors, int door_1) {
         Monty m = new BehavioralBlueprintMonty(n_doors, door_1, winning_mode, losing_mode);
+        m.generateVec();
         int[] result = new int[2];
         result[0] = m.getOpenDoor();
         result[1] = m.getPrize();
