@@ -1,6 +1,4 @@
-//package monty;
-
-import java.util.*;
+package monty;
 
 public class MontyHall {
     
@@ -32,6 +30,11 @@ public class MontyHall {
             m = new LazyMonty(n_doors, door_1);
         else if (mode.equalsIgnoreCase("healthy"))
             m = new HealthyMonty(n_doors, door_1);
+        else if (mode.equalsIgnoreCase("strategic"))
+        {
+        	LearningAgent a = new LeftLearningAgent(n_doors);
+        	m = new QLearningMonty(n_doors,door_1,a);
+        }
 
         m.generateVec();
         int[] result = new int[2];
